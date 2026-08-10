@@ -52,7 +52,6 @@ public final class ConfigLoader {
                 readEnum(properties, "app.mode", AppMode.class),
                 readEnum(properties, "persistence.mode", PersistenceMode.class),
                 readPath(properties, "filesystem.path"),
-                readPath(properties, "hotel.images.path"),
                 new DatabaseConfig(
                         require(properties, "db.url"),
                         require(properties, "db.user"),

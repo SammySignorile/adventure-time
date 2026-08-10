@@ -140,4 +140,4 @@ Le eccezioni personalizzate non vengono semplicemente catturate e rilanciate:
 - non sono implementati voli, attività, email o pagamenti reali;
 - il ruolo ADMIN esiste nello schema per compatibilità, ma non ha un flusso UI;
 - nel backend JDBC prenotazione e punti non sono ancora racchiusi in una singola transazione;
-- ogni hotel usa una sola immagine principale; nel DB viene salvato il nome del file e la directory fisica è configurata nel properties.
+- ogni hotel ha un'immagine principale e può avere una piccola galleria; nel DB viene salvato soltanto il nome della risorsa inclusa nel classpath.

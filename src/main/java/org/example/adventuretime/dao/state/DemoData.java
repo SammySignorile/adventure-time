@@ -45,19 +45,19 @@ public final class DemoData {
                 "Vista Colosseo • WiFi • Spa", "150m dal centro"));
         state.getHotels().add(withDetails(
                 hotel(4, 4, "Hotel Trastevere Cozy", "Camera Matrimoniale",
-                        "130.00", "roma 4.jpg", 2),
+                        "130.00", "roma centro.jpg", 2),
                 "WiFi • Colazione • Terrazza", "800m dal centro"));
 
         HotelRoom milan = withDetails(
                 hotel(5, 4, "Hotel Milano Luxury", "Suite Deluxe",
-                        "250.00", "milano 1.jpg", 4),
+                        "250.00", "stanza 2.jpg", 4),
                 "Spa • Piscina • Ristorante", "200m dal centro");
         milan.setCity("Milano");
         state.getHotels().add(milan);
 
         HotelRoom naples = withDetails(
                 hotel(6, 4, "Hotel Napoli Mare", "Camera Matrimoniale",
-                        "90.00", "napoli 1.jpg", 2),
+                        "90.00", "colazione 2.jpg", 2),
                 "Vista mare • WiFi • Colazione", "1km dal centro");
         naples.setCity("Napoli");
         state.getHotels().add(naples);

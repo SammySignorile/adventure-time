@@ -58,26 +58,20 @@ Contiene impostazioni personali della tua sessione di lavoro:
 
 ## 1.2 Cartella `database`
 
-Contiene i file relativi a MySQL.
-
-### `adventuretime.sql`
-
-È lo script che:
-
-1. elimina un eventuale vecchio database;
-2. crea `adventuretimedb`;
-3. crea le tabelle;
-4. inserisce dati di prova.
-
-Lo script è stato semplificato. I DAO JDBC usano direttamente query SQL tramite `PreparedStatement`, quindi non sono necessarie stored procedure per far funzionare l'app.
+Contiene la guida relativa alle immagini memorizzate nel database. Lo script
+`adventuretime.sql` viene consegnato separatamente e importato tramite MySQL
+Workbench; non è incluso nel repository Java.
 
 ### `COME_USARE_LE_FOTO.md`
 
-Spiega dove mettere le immagini e come il nome salvato nel database viene trasformato in un percorso reale sul computer.
+Spiega dove si trovano le immagini e come il nome salvato nel database viene
+caricato dal classpath.
 
 ### Come dirlo all'esame
 
-> La cartella `database` contiene lo schema MySQL e i dati iniziali. Il database rappresenta una delle implementazioni della persistenza. I controller non eseguono SQL direttamente: usano le interfacce DAO.
+> Lo schema MySQL viene consegnato separatamente dal codice Java e importato
+> con MySQL Workbench. I controller non eseguono SQL direttamente: usano le
+> interfacce DAO.
 
 ---
 
@@ -229,15 +223,9 @@ Poi crea un oggetto `AppConfig` con valori già convertiti nel tipo corretto.
 
 ### `AppConfig`
 
-È un contenitore immutabile della configurazione.
-
-Ora contiene anche:
-
-```java
-Path hotelImagesPath
-```
-
-che indica la cartella delle foto.
+È un contenitore immutabile della configurazione. Le immagini non richiedono
+un percorso configurabile perché vengono distribuite nel classpath insieme
+all'applicazione.
 
 ### Perché leggere prima la configurazione
 
@@ -647,45 +635,26 @@ La colonna si chiama:
 nome_immagine
 ```
 
-## 5.2 Dove si trova la cartella
+## 5.2 Dove si trovano le immagini
 
-Nel properties:
+Le immagini sono incluse in `src/main/resources/images`. Maven e IntelliJ
+inseriscono automaticamente questa cartella nel classpath.
 
-```properties
-hotel.images.path=${user.home}/Desktop/AdventureTimeImages
-```
-
-Sul tuo computer `${user.home}` diventa normalmente:
-
-```text
-C:/Users/sammy
-```
-
-Il percorso completo diventa:
-
-```text
-C:/Users/sammy/Desktop/AdventureTimeImages
-```
-
-## 5.3 Classe che costruisce il percorso
+## 5.3 Classe che carica la risorsa
 
 `HotelImageLoader` esegue concettualmente:
 
 ```text
-cartella base + nome file del DB
+/images/ + nome file del DB
 ```
 
 Esempio:
 
 ```text
-C:/Users/sammy/Desktop/AdventureTimeImages
-+
-roma 1.jpg
-=
-C:/Users/sammy/Desktop/AdventureTimeImages/roma 1.jpg
+/images/roma 1.jpg
 ```
 
-Poi converte il `Path` in un URI che JavaFX può usare per creare un `Image`.
+Poi usa l'URL della risorsa per creare un `Image` JavaFX.
 
 ## 5.4 Dove viene visualizzata
 
@@ -705,11 +674,14 @@ C:/Users/sammy/Desktop/...
 
 funzionerebbe soltanto sul tuo PC.
 
-Salvando solo il nome, puoi spostare l'app su un altro computer e cambiare una sola proprietà.
+Salvando solo il nome, puoi spostare l'app su un altro computer senza salvare
+percorsi Windows nel database.
 
 ### Frase pronta
 
-> Nel database salvo soltanto il nome logico dell'immagine. La directory fisica è una configurazione esterna, così il database non dipende dal computer su cui viene eseguita l'app.
+> Nel database salvo soltanto il nome logico dell'immagine. Il file è una
+> risorsa del classpath, così il database non dipende dal computer su cui viene
+> eseguita l'app.
 
 ---
 
@@ -1019,4 +991,4 @@ Profilo utente
 7. La disponibilità viene ricontrollata al momento della conferma.
 8. Il Decorator combina gli extra.
 9. La Facade coordina il sottosistema prenotazione.
-10. Nel DB si salva solo il nome dell'immagine; il percorso è configurabile.
+10. Nel DB si salva solo il nome dell'immagine; il file è nel classpath.
