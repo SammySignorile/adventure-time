@@ -1,5 +1,8 @@
 # Correzioni e semplificazioni dello script SQL iniziale
 
+Lo script risultante viene consegnato come file separato e non è incluso nel
+repository Java.
+
 1. Rimossa la riga con email vuota perché `email` deve identificare un account valido e univoco.
 2. Aggiunto `gestore_id` in `hotelrooms` per sapere quale venditore possiede la struttura.
 3. Uniformati i nomi delle colonne usati dai DAO Java.

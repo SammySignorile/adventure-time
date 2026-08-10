@@ -75,13 +75,14 @@ classpath e, se non esiste, la GUI mostra “Foto non disponibile”.
 
 ## MySQL
 
-1. Eseguire `database/adventuretime.sql`.
+1. Importare in MySQL Workbench lo script `adventuretime.sql` consegnato
+   separatamente dal progetto.
 2. Modificare utente e password in `application-full-db.properties`.
 3. Avviare selezionando quella configurazione.
 
-Lo script principale è stato mantenuto volutamente semplice: quattro tabelle,
-chiavi primarie, chiavi esterne e dati di prova. I controlli applicativi più
-specifici restano nella logica Java.
+Lo script non è versionato nel repository perché contiene la preparazione
+dell'ambiente MySQL. La versione consegnata separatamente contiene quattro
+tabelle, chiavi primarie, chiavi esterne e dati di prova.
 
 ## Test
 

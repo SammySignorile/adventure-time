@@ -58,18 +58,9 @@ Contiene impostazioni personali della tua sessione di lavoro:
 
 ## 1.2 Cartella `database`
 
-Contiene i file relativi a MySQL.
-
-### `adventuretime.sql`
-
-È lo script che:
-
-1. elimina un eventuale vecchio database;
-2. crea `adventuretimedb`;
-3. crea le tabelle;
-4. inserisce dati di prova.
-
-Lo script è stato semplificato. I DAO JDBC usano direttamente query SQL tramite `PreparedStatement`, quindi non sono necessarie stored procedure per far funzionare l'app.
+Contiene la guida relativa alle immagini memorizzate nel database. Lo script
+`adventuretime.sql` viene consegnato separatamente e importato tramite MySQL
+Workbench; non è incluso nel repository Java.
 
 ### `COME_USARE_LE_FOTO.md`
 
@@ -78,7 +69,9 @@ caricato dal classpath.
 
 ### Come dirlo all'esame
 
-> La cartella `database` contiene lo schema MySQL e i dati iniziali. Il database rappresenta una delle implementazioni della persistenza. I controller non eseguono SQL direttamente: usano le interfacce DAO.
+> Lo schema MySQL viene consegnato separatamente dal codice Java e importato
+> con MySQL Workbench. I controller non eseguono SQL direttamente: usano le
+> interfacce DAO.
 
 ---
 
