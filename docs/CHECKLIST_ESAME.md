@@ -16,7 +16,7 @@
 - [x] Decorator per i servizi extra;
 - [x] Session Context per ruoli;
 - [x] eccezioni personalizzate gestite nei boundary;
-- [x] nove test per configurazione e flussi principali;
+- [x] ventuno test per configurazione e flussi principali;
 - [x] circa 5.500 righe Java, senza codice aggiunto al solo scopo di aumentare il conteggio;
 - [x] script MySQL coerente;
 - [x] diagrammi PlantUML modificabili.

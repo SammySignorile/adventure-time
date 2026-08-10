@@ -5,6 +5,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
+/*
+ * L'output diretto è il confine della CLI. Le istruzioni del progetto
+ * ammettono esplicitamente le segnalazioni Sonar relative a System.out.
+ */
+@SuppressWarnings("java:S106")
 public final class CliIO {
 
     private final Scanner scanner;

@@ -83,13 +83,16 @@ Lo script principale è stato mantenuto volutamente semplice: tre tabelle, chiav
 ## Test
 
 ```bash
-mvn test
+mvn verify
 ```
 
-Sono presenti nove test automatici per configurazione, login, ricerca,
+Sono presenti ventuno test automatici per configurazione, login, ricerca,
 prenotazione e Decorator. Prima della consegna va completata la matricola nei
 commenti di ciascuna classe di test e va verificato che l'assegnazione rispecchi
 quella effettiva del gruppo.
+
+Il comando `verify` esegue i test e genera il report di coverage JaCoCo in
+`target/site/jacoco/index.html`.
 
 ## Struttura della documentazione
 

@@ -971,7 +971,7 @@ ManageBookingsApplicationController.confirm(request)
 BookingFacade.createBooking(request)
     │
     ├── quote(request)
-    │     ├── BeanValidator.validateBookingRequest()
+    │     ├── BookingRequestBean.validateSyntax()
     │     ├── requireTraveler()
     │     ├── HotelDAO.findById()
     │     ├── calcolo numero notti
