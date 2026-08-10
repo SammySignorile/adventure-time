@@ -4,23 +4,13 @@ actor Viaggiatore
 actor Venditore
 rectangle "Adventure Time" {
   usecase "Login" as UC1
-  usecase "Cercare hotel" as UC2
-  usecase "Visualizzare risultati" as UC3
-  usecase "Creare preventivo" as UC4
-  usecase "Aggiungere servizi extra" as UC5
-  usecase "Confermare prenotazione" as UC6
-  usecase "Visualizzare profilo e storico" as UC7
-  usecase "Gestire strutture" as UC8
-  usecase "Visualizzare prenotazioni ricevute" as UC9
+  usecase "Gestire una prenotazione" as UC2
+  usecase "Prenotare" as UC3
+  usecase "Gestire prenotazioni ricevute" as UC4
 }
 Viaggiatore --> UC1
 Viaggiatore --> UC2
-Viaggiatore --> UC6
-Viaggiatore --> UC7
 Venditore --> UC1
-Venditore --> UC8
-Venditore --> UC9
-UC2 .> UC3 : <<include>>
-UC6 .> UC4 : <<include>>
-UC5 .> UC4 : <<extend>>
+Venditore --> UC4
+UC3 -|> UC2
 @enduml

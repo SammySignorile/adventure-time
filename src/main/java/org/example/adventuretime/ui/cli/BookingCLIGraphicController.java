@@ -19,10 +19,15 @@ public final class BookingCLIGraphicController {
     }
 
     public void execute(HotelBean hotel) {
-        SearchCriteriaBean criteria = AppContext.getInstance()
-                .getFlowContext()
-                .getLastCriteria()
-                .orElseThrow();
+        SearchCriteriaBean criteria;
+        try {
+            criteria = AppContext.getInstance()
+                    .manageBookingsController()
+                    .getCurrentSearchCriteria();
+        } catch (AdventureTimeException e) {
+            io.error(e.getMessage());
+            return;
+        }
 
         EnumSet<ExtraService> extras = EnumSet.noneOf(ExtraService.class);
         if (io.readYesNo("Aggiungere assicurazione annullamento (+80€)?")) {
@@ -65,7 +70,7 @@ public final class BookingCLIGraphicController {
 
             var booking = AppContext.getInstance()
                     .manageBookingsController()
-                    .confirm(request);
+                    .book(request);
             io.info("Prenotazione confermata. Codice: " + booking.getId());
         } catch (AdventureTimeException e) {
             io.error(e.getMessage());

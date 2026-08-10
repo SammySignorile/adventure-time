@@ -13,7 +13,7 @@ Il documento definisce requisiti, attori, flussi e scelte progettuali di Adventu
 L'applicazione presenta due ruoli:
 
 - **Viaggiatore**: ricerca hotel, valuta il prezzo, seleziona servizi aggiuntivi, usa punti fedeltà e conferma una prenotazione.
-- **Venditore**: inserisce/rimuove camere e consulta le prenotazioni ricevute.
+- **Venditore**: inserisce/rimuove camere, consulta e annulla le prenotazioni ricevute.
 
 L'app è disponibile con due interfacce, JavaFX e command line, e può essere avviata in modalità demo in-memory o full con MySQL/filesystem.
 
@@ -50,6 +50,7 @@ Adventure Time concentra il perimetro su ricerca, disponibilità, prenotazione c
 4. Come venditore, voglio aggiungere una struttura al catalogo, per renderla disponibile ai viaggiatori.
 5. Come venditore, voglio rimuovere una mia struttura, per mantenere aggiornata l'offerta.
 6. Come venditore, voglio visualizzare le prenotazioni ricevute, per conoscere occupazione e incassi previsti.
+7. Come venditore, voglio annullare una prenotazione ricevuta, per gestire un soggiorno che non puo essere erogato.
 
 ## 3. Requisiti funzionali
 
@@ -59,6 +60,7 @@ Adventure Time concentra il perimetro su ricerca, disponibilità, prenotazione c
 4. Il sistema deve calcolare il prezzo come prezzo per notte moltiplicato per il numero di notti, più i servizi extra, meno lo sconto punti.
 5. Il sistema deve ricontrollare la disponibilità immediatamente prima della conferma.
 6. Il sistema deve permettere a un venditore di modificare soltanto strutture associate al proprio identificativo.
+7. Il sistema deve permettere a un venditore di annullare soltanto prenotazioni ricevute dalle proprie strutture.
 
 ## 4. Use case: prenotare un hotel
 
@@ -124,12 +126,13 @@ Le eccezioni personalizzate non vengono semplicemente catturate e rilanciate:
 - ricerca con filtri e propagazione nel `FlowContext`;
 - calcolo Decorator e salvataggio prenotazione;
 - creazione di una struttura da parte del venditore.
+- annullamento di una prenotazione ricevuta da parte del venditore.
 
 ## 8. Persistenza
 
 - **Demo:** `InMemoryDataStore`, dati persi alla chiusura.
 - **Filesystem:** serializzazione di `DataState` con scrittura temporanea.
-- **DB:** MySQL tramite DAO JDBC e `PreparedStatement`.
+- **DB:** MySQL tramite DAO JDBC, una connessione condivisa e `PreparedStatement` chiusi dopo ogni operazione.
 
 ## 9. Discrepanze/limiti dichiarati
 

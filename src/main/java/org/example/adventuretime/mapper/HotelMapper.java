@@ -9,32 +9,32 @@ public final class HotelMapper {
     }
 
     public static HotelBean toBean(HotelRoom room) {
-        return new HotelBean(
-                room.getId(),
-                room.getManagerId(),
-                room.getName(),
-                room.getCity(),
-                room.getRoomType(),
-                room.getServices(),
-                room.getDistanceFromCenter(),
-                room.getPricePerNight(),
-                room.getImageFileName(),
-                room.getCapacity()
-        );
+        HotelBean bean = new HotelBean();
+        bean.setId(room.getId());
+        bean.setManagerId(room.getManagerId());
+        bean.setName(room.getName());
+        bean.setCity(room.getCity());
+        bean.setRoomType(room.getRoomType());
+        bean.setServices(room.getServices());
+        bean.setDistanceFromCenter(room.getDistanceFromCenter());
+        bean.setPricePerNight(room.getPricePerNight());
+        bean.setImageFileName(room.getImageFileName());
+        bean.setCapacity(room.getCapacity());
+        return bean;
     }
 
     public static HotelRoom toEntity(HotelBean bean) {
-        return new HotelRoom(
-                bean.getId(),
-                bean.getManagerId(),
-                bean.getName(),
-                bean.getCity(),
-                bean.getRoomType(),
-                bean.getServices(),
-                bean.getDistanceFromCenter(),
-                bean.getPricePerNight(),
-                bean.getImageFileName(),
-                bean.getCapacity()
-        );
+        HotelRoom room = new HotelRoom();
+        room.setId(bean.getId());
+        room.setManagerId(bean.getManagerId());
+        room.setName(bean.getName());
+        room.setCity(bean.getCity());
+        room.setRoomType(bean.getRoomType());
+        room.setServices(bean.getServices());
+        room.setDistanceFromCenter(bean.getDistanceFromCenter());
+        room.setPricePerNight(bean.getPricePerNight());
+        room.setImageFileName(bean.getImageFileName());
+        room.setCapacity(bean.getCapacity());
+        return room;
     }
 }

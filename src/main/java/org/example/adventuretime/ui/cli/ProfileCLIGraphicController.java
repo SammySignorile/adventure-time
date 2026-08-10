@@ -4,6 +4,7 @@ import org.example.adventuretime.AppContext;
 import org.example.adventuretime.bean.BookingBean;
 import org.example.adventuretime.bean.UserBean;
 import org.example.adventuretime.exception.AdventureTimeException;
+import org.example.adventuretime.model.Role;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ public final class ProfileCLIGraphicController {
              * Il contenuto della sezione prenotazioni cambia
              * in base al ruolo dell'utente autenticato.
              */
-            if (context.getUserSession().isVendor()) {
+            if (user.getRole() == Role.GESTORE) {
 
                 /*
                  * L'albergatore visualizza le prenotazioni
@@ -86,6 +87,7 @@ public final class ProfileCLIGraphicController {
                     + " -> " + booking.getCheckOut()
                     + " | persone: " + booking.getPeople()
                     + " | €" + booking.getTotalPrice()
+                    + " | stato: " + booking.getStatus()
                     + " | extra: " + booking.getExtrasLabel());
         }
     }

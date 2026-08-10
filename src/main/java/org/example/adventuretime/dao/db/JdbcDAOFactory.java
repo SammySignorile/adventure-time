@@ -14,12 +14,13 @@ public final class JdbcDAOFactory implements DAOFactory {
     private final UserDAO userDAO;
     private final HotelDAO hotelDAO;
     private final BookingDAO bookingDAO;
+    private final DBConnectionManager connectionManager;
 
     public JdbcDAOFactory(AppConfig config) {
-        DBConnectionManager manager = new DBConnectionManager(config);
-        userDAO = new JdbcUserDAO(manager);
-        hotelDAO = new JdbcHotelDAO(manager);
-        bookingDAO = new JdbcBookingDAO(manager);
+        connectionManager = new DBConnectionManager(config);
+        userDAO = new JdbcUserDAO(connectionManager);
+        hotelDAO = new JdbcHotelDAO(connectionManager);
+        bookingDAO = new JdbcBookingDAO(connectionManager);
     }
 
     @Override
@@ -35,5 +36,11 @@ public final class JdbcDAOFactory implements DAOFactory {
     @Override
     public BookingDAO getBookingDAO() {
         return bookingDAO;
+    }
+
+    @Override
+    public void close()
+            throws org.example.adventuretime.exception.PersistenceException {
+        connectionManager.close();
     }
 }

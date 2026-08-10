@@ -8,28 +8,47 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * Shared JDBC connection provider. It stores only connection parameters and
- * creates a fresh Connection for each DAO operation. Connections are closed by
- * try-with-resources in the DAOs, avoiding a global connection that can expire.
+ * Gestisce l'unica connessione JDBC condivisa dai DAO dell'applicazione.
+ * Statement e ResultSet vengono chiusi dai singoli DAO; la connessione viene
+ * chiusa quando termina l'applicazione.
  */
-public final class DBConnectionManager {
+public final class DBConnectionManager implements AutoCloseable {
 
     private final String url;
     private final String user;
     private final String password;
+    private Connection connection;
 
     public DBConnectionManager(AppConfig config) {
-        this.url = config.databaseUrl();
-        this.user = config.databaseUser();
-        this.password = config.databasePassword();
+        this.url = config.database().url();
+        this.user = config.database().user();
+        this.password = config.database().password();
     }
 
-    public Connection openConnection() throws PersistenceException {
+    public synchronized Connection getConnection()
+            throws PersistenceException {
         try {
-            return DriverManager.getConnection(url, user, password);
+            if (connection == null || connection.isClosed()) {
+                connection = DriverManager.getConnection(url, user, password);
+            }
+            return connection;
         } catch (SQLException e) {
             throw new PersistenceException(
                     "Impossibile connettersi al database Adventure Time.", e);
+        }
+    }
+
+    @Override
+    public synchronized void close() throws PersistenceException {
+        if (connection == null) {
+            return;
+        }
+        try {
+            connection.close();
+            connection = null;
+        } catch (SQLException e) {
+            throw new PersistenceException(
+                    "Impossibile chiudere la connessione al database.", e);
         }
     }
 }

@@ -40,6 +40,8 @@ public final class ManageHotelsGraphicController {
     private TableColumn<BookingBean, String> bookingPeopleColumn;
     @FXML
     private TableColumn<BookingBean, String> bookingTotalColumn;
+    @FXML
+    private TableColumn<BookingBean, String> bookingStatusColumn;
 
     @FXML
     private TextField nameField;
@@ -87,6 +89,9 @@ public final class ManageHotelsGraphicController {
         bookingTotalColumn.setCellValueFactory(data ->
                 new SimpleStringProperty("€"
                         + data.getValue().getTotalPrice()));
+        bookingStatusColumn.setCellValueFactory(data ->
+                new SimpleStringProperty(
+                        data.getValue().getStatus().name()));
         refresh();
     }
 
@@ -158,6 +163,27 @@ public final class ManageHotelsGraphicController {
             AppContext.getInstance()
                     .getSceneRouter()
                     .show(SceneId.VENDOR_HOME);
+        } catch (AdventureTimeException e) {
+            AlertHelper.error(e.getMessage());
+        }
+    }
+
+    @FXML
+    private void onCancelBooking() {
+        BookingBean selected = receivedBookingsTable
+                .getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            AlertHelper.error("Selezionare una prenotazione da annullare.");
+            return;
+        }
+
+        try {
+            AppContext.getInstance()
+                    .manageHotelsController()
+                    .cancelReceivedBooking(selected.getId());
+            refresh();
+            AlertHelper.info("Prenotazione aggiornata",
+                    "La prenotazione è stata annullata.");
         } catch (AdventureTimeException e) {
             AlertHelper.error(e.getMessage());
         }

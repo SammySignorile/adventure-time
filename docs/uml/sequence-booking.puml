@@ -33,7 +33,7 @@ Viaggiatore -> GUI : preme Conferma
 GUI -> GUI : validCardFields()\nbuildRequest()
 GUI -> CTX : manageBookingsController()
 CTX --> GUI : ManageBookingsApplicationController
-GUI -> AC : confirm(request)
+GUI -> AC : book(request)
 AC -> FACADE : createBooking(request)
 
 FACADE -> FACADE : quote(request)\nricalcolo e validazione

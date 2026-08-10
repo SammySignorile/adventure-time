@@ -77,7 +77,7 @@ class ManageBookingsApplicationControllerTest {
     void confirmationPersistsBooking() throws Exception {
         int before = factory.getBookingDAO().findByUserId(1).size();
 
-        var booking = controller.confirm(requestWith(Set.of()));
+        var booking = controller.book(requestWith(Set.of()));
 
         int after = factory.getBookingDAO().findByUserId(1).size();
 

@@ -13,6 +13,7 @@ import org.example.adventuretime.exception.HotelUnavailableException;
 import org.example.adventuretime.exception.PersistenceException;
 import org.example.adventuretime.exception.ValidationException;
 import org.example.adventuretime.facade.BookingFacade;
+import org.example.adventuretime.mapper.BookingMapper;
 import org.example.adventuretime.mapper.HotelMapper;
 import org.example.adventuretime.model.Booking;
 import org.example.adventuretime.model.HotelSearchCriteria;
@@ -27,8 +28,9 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Controller applicativo del caso d'uso "Gestire prenotazioni".
- * Ricerca, selezione, preventivo, conferma e storico sono nello stesso flusso.
+ * Controller applicativo del caso d'uso "Gestire una prenotazione".
+ * Il caso d'uso concreto "Prenotare" comprende ricerca, selezione,
+ * preventivo e conferma della prenotazione.
  */
 public final class ManageBookingsApplicationController {
 
@@ -140,6 +142,18 @@ public final class ManageBookingsApplicationController {
     }
 
     /**
+     * Restituisce una copia dei criteri della ricerca corrente.
+     */
+    public SearchCriteriaBean getCurrentSearchCriteria()
+            throws ValidationException, AuthorizationException {
+        requireTraveler();
+        return flowContext.getLastCriteria()
+                .orElseThrow(() -> new ValidationException(
+                        "I criteri della ricerca non sono più disponibili."
+                ));
+    }
+
+    /**
      * Restituisce i nomi delle immagini di un hotel presente
      * nei risultati della ricerca corrente.
      */
@@ -189,7 +203,7 @@ public final class ManageBookingsApplicationController {
         return bookingFacade.quote(request);
     }
 
-    public BookingBean confirm(BookingRequestBean request)
+    public BookingBean book(BookingRequestBean request)
             throws ValidationException, PersistenceException,
             AuthorizationException, HotelUnavailableException {
 
@@ -213,7 +227,7 @@ public final class ManageBookingsApplicationController {
                     .map(HotelMapper::toBean)
                     .orElseGet(() -> removedHotel(booking));
 
-            result.add(toBean(booking, hotel));
+            result.add(BookingMapper.toBean(booking, hotel));
         }
 
         return result;
@@ -302,37 +316,17 @@ public final class ManageBookingsApplicationController {
         return userSession.requireUser();
     }
 
-    private static BookingBean toBean(
-            Booking booking,
-            HotelBean hotel
-    ) {
-        return new BookingBean(
-                booking.getId(),
-                booking.getUserId(),
-                hotel,
-                booking.getCheckIn(),
-                booking.getCheckOut(),
-                booking.getPeople(),
-                booking.getTotalPrice(),
-                booking.getExtras(),
-                booking.getPointsUsed(),
-                booking.getStatus()
-        );
-    }
-
     private static HotelBean removedHotel(Booking booking) {
-        return new HotelBean(
-                booking.getHotelId(),
-                0,
-                "Struttura rimossa",
-                "",
-                "",
-                "",
-                "",
-                BigDecimal.ZERO,
-                "",
-                0
-        );
+        HotelBean hotel = new HotelBean();
+        hotel.setId(booking.getHotelId());
+        hotel.setName("Struttura rimossa");
+        hotel.setCity("");
+        hotel.setRoomType("");
+        hotel.setServices("");
+        hotel.setDistanceFromCenter("");
+        hotel.setPricePerNight(BigDecimal.ZERO);
+        hotel.setImageFileName("");
+        return hotel;
     }
 
 }

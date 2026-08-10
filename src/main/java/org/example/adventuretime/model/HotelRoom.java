@@ -8,7 +8,6 @@ import java.util.Objects;
 /**
  * Entità persistente che rappresenta una camera/struttura prenotabile.
  */
-@SuppressWarnings("java:S107")
 public class HotelRoom implements Serializable {
 
     @Serial
@@ -19,7 +18,7 @@ public class HotelRoom implements Serializable {
     private String name;
     private String city;
     private String roomType;
-    private String services;
+    private String services = "";
     private String distanceFromCenter;
     private BigDecimal pricePerNight;
     private String imageFileName;
@@ -29,25 +28,17 @@ public class HotelRoom implements Serializable {
         // Costruttore vuoto utile per il mapping.
     }
 
-    public HotelRoom(long id, long managerId, String name, String city,
-                     String roomType, String services, String distanceFromCenter,
-                     BigDecimal pricePerNight, String imageFileName, int capacity) {
-        this.id = id;
-        this.managerId = managerId;
-        this.name = name;
-        this.city = city;
-        this.roomType = roomType;
-        this.services = services;
-        this.distanceFromCenter = distanceFromCenter;
-        this.pricePerNight = pricePerNight;
-        this.imageFileName = imageFileName;
-        this.capacity = capacity;
-    }
-
     public HotelRoom(HotelRoom other) {
-        this(other.id, other.managerId, other.name, other.city,
-                other.roomType, other.services, other.distanceFromCenter,
-                other.pricePerNight, other.imageFileName, other.capacity);
+        this.id = other.id;
+        this.managerId = other.managerId;
+        this.name = other.name;
+        this.city = other.city;
+        this.roomType = other.roomType;
+        this.services = other.services;
+        this.distanceFromCenter = other.distanceFromCenter;
+        this.pricePerNight = other.pricePerNight;
+        this.imageFileName = other.imageFileName;
+        this.capacity = other.capacity;
     }
 
     public long getId() {

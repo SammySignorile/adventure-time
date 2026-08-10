@@ -18,6 +18,7 @@ Progetto didattico per **Ingegneria del Software e Progettazione Web**: applicaz
 - visualizzazione delle proprie strutture;
 - inserimento ed eliminazione di una struttura;
 - visualizzazione delle prenotazioni ricevute;
+- annullamento di una prenotazione ricevuta;
 - profilo.
 
 ## Architettura essenziale
@@ -86,8 +87,9 @@ Lo script principale è stato mantenuto volutamente semplice: tre tabelle, chiav
 mvn verify
 ```
 
-Sono presenti ventuno test automatici per configurazione, login, ricerca,
-prenotazione e Decorator. Prima della consegna va completata la matricola nei
+Sono presenti 23 test automatici per configurazione, login, ricerca,
+prenotazione, gestione delle prenotazioni ricevute e Decorator. Prima della
+consegna va completata la matricola nei
 commenti di ciascuna classe di test e va verificato che l'assegnazione rispecchi
 quella effettiva del gruppo.
 

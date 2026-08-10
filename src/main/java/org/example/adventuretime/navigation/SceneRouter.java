@@ -42,8 +42,8 @@ public final class SceneRouter {
             if (scene == null) {
                 scene = new Scene(
                         root,
-                        config.guiWidth(),
-                        config.guiHeight()
+                        config.window().width(),
+                        config.window().height()
                 );
                 primaryStage.setScene(scene);
             } else {

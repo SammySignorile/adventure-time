@@ -6,6 +6,7 @@ import org.example.adventuretime.model.ExtraService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.EnumSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -13,7 +14,6 @@ import java.util.stream.Collectors;
  * Bean di output usato per mostrare una prenotazione.
  * Non contiene la validazione di HotelBean: quella appartiene a HotelBean.
  */
-@SuppressWarnings("java:S107")
 public class BookingBean {
 
     private long id;
@@ -23,72 +23,96 @@ public class BookingBean {
     private LocalDate checkOut;
     private int people;
     private BigDecimal totalPrice;
-    private EnumSet<ExtraService> extras;
+    private EnumSet<ExtraService> extras =
+            EnumSet.noneOf(ExtraService.class);
     private int pointsUsed;
     private BookingStatus status;
 
-    public BookingBean(
-            long id,
-            long userId,
-            HotelBean hotel,
-            LocalDate checkIn,
-            LocalDate checkOut,
-            int people,
-            BigDecimal totalPrice,
-            Set<ExtraService> extras,
-            int pointsUsed,
-            BookingStatus status
-    ) {
-        this.id = id;
-        this.userId = userId;
-        this.hotel = hotel;
-        this.checkIn = checkIn;
-        this.checkOut = checkOut;
-        this.people = people;
-        this.totalPrice = totalPrice;
-        this.extras = copyExtras(extras);
-        this.pointsUsed = pointsUsed;
-        this.status = status;
+    public BookingBean() {
+        // Costruttore vuoto da Java Bean; il mapper valorizza i campi.
     }
 
     public long getId() {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public long getUserId() {
         return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public HotelBean getHotel() {
         return hotel;
     }
 
+    public void setHotel(HotelBean hotel) {
+        this.hotel = hotel;
+    }
+
     public LocalDate getCheckIn() {
         return checkIn;
+    }
+
+    public void setCheckIn(LocalDate checkIn) {
+        this.checkIn = Objects.requireNonNull(
+                checkIn, "La data di arrivo è obbligatoria.");
     }
 
     public LocalDate getCheckOut() {
         return checkOut;
     }
 
+    public void setCheckOut(LocalDate checkOut) {
+        this.checkOut = Objects.requireNonNull(
+                checkOut, "La data di partenza è obbligatoria.");
+    }
+
     public int getPeople() {
         return people;
+    }
+
+    public void setPeople(int people) {
+        this.people = people;
     }
 
     public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = Objects.requireNonNull(
+                totalPrice, "Il prezzo totale è obbligatorio.");
+    }
+
     public Set<ExtraService> getExtras() {
         return copyExtras(extras);
+    }
+
+    public void setExtras(Set<ExtraService> extras) {
+        this.extras = copyExtras(extras);
     }
 
     public int getPointsUsed() {
         return pointsUsed;
     }
 
+    public void setPointsUsed(int pointsUsed) {
+        this.pointsUsed = pointsUsed;
+    }
+
     public BookingStatus getStatus() {
         return status;
+    }
+
+    public void setStatus(BookingStatus status) {
+        this.status = status;
     }
 
     public String getExtrasLabel() {

@@ -11,6 +11,7 @@ import org.example.adventuretime.exception.AuthorizationException;
 import org.example.adventuretime.exception.HotelUnavailableException;
 import org.example.adventuretime.exception.PersistenceException;
 import org.example.adventuretime.exception.ValidationException;
+import org.example.adventuretime.mapper.BookingMapper;
 import org.example.adventuretime.mapper.HotelMapper;
 import org.example.adventuretime.model.Booking;
 import org.example.adventuretime.model.BookingStatus;
@@ -119,16 +120,16 @@ public final class BookingFacade {
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
                 .setScale(2, RoundingMode.HALF_UP);
 
-        return new BookingQuoteBean(
-                HotelMapper.toBean(hotel),
-                nights,
-                basePrice,
-                component.getExtras(),
-                extrasPrice,
-                pointsUsed,
-                pointsDiscount,
-                total
-        );
+        BookingQuoteBean quote = new BookingQuoteBean();
+        quote.setHotel(HotelMapper.toBean(hotel));
+        quote.setNights(nights);
+        quote.setBasePrice(basePrice);
+        quote.setExtras(component.getExtras());
+        quote.setExtrasPrice(extrasPrice);
+        quote.setPointsUsed(pointsUsed);
+        quote.setPointsDiscount(pointsDiscount);
+        quote.setTotalPrice(total);
+        return quote;
     }
 
     public BookingBean createBooking(BookingRequestBean request)
@@ -149,18 +150,16 @@ public final class BookingFacade {
             );
         }
 
-        Booking booking = new Booking(
-                0,
-                sessionUser.getId(),
-                request.getHotelId(),
-                request.getCheckIn(),
-                request.getCheckOut(),
-                request.getPeople(),
-                quote.getTotalPrice(),
-                request.getExtras(),
-                quote.getPointsUsed(),
-                BookingStatus.CONFIRMED
-        );
+        Booking booking = new Booking();
+        booking.setUserId(sessionUser.getId());
+        booking.setHotelId(request.getHotelId());
+        booking.setCheckIn(request.getCheckIn());
+        booking.setCheckOut(request.getCheckOut());
+        booking.setPeople(request.getPeople());
+        booking.setTotalPrice(quote.getTotalPrice());
+        booking.setExtras(request.getExtras());
+        booking.setPointsUsed(quote.getPointsUsed());
+        booking.setStatus(BookingStatus.CONFIRMED);
 
         Booking created = bookingDAO.save(booking);
 
@@ -176,18 +175,7 @@ public final class BookingFacade {
         userDAO.updatePoints(sessionUser.getId(), updatedPoints);
         userSession.updatePoints(updatedPoints);
 
-        return new BookingBean(
-                created.getId(),
-                created.getUserId(),
-                quote.getHotel(),
-                created.getCheckIn(),
-                created.getCheckOut(),
-                created.getPeople(),
-                created.getTotalPrice(),
-                created.getExtras(),
-                created.getPointsUsed(),
-                created.getStatus()
-        );
+        return BookingMapper.toBean(created, quote.getHotel());
     }
 
     private UserBean requireTraveler() throws AuthorizationException {

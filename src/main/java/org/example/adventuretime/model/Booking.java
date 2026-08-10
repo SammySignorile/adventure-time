@@ -8,7 +8,6 @@ import java.util.EnumSet;
 import java.util.Objects;
 import java.util.Set;
 
-@SuppressWarnings("java:S107")
 public class Booking implements Serializable {
 
     @Serial
@@ -30,27 +29,19 @@ public class Booking implements Serializable {
         status = BookingStatus.CONFIRMED;
     }
 
-    public Booking(long id, long userId, long hotelId, LocalDate checkIn,
-                   LocalDate checkOut, int people, BigDecimal totalPrice,
-                   Set<ExtraService> extras, int pointsUsed, BookingStatus status) {
-        this.id = id;
-        this.userId = userId;
-        this.hotelId = hotelId;
-        this.checkIn = checkIn;
-        this.checkOut = checkOut;
-        this.people = people;
-        this.totalPrice = totalPrice;
-        this.extras = extras.isEmpty()
-                ? EnumSet.noneOf(ExtraService.class)
-                : EnumSet.copyOf(extras);
-        this.pointsUsed = pointsUsed;
-        this.status = status;
-    }
-
     public Booking(Booking other) {
-        this(other.id, other.userId, other.hotelId, other.checkIn,
-                other.checkOut, other.people, other.totalPrice,
-                other.extras, other.pointsUsed, other.status);
+        this.id = other.id;
+        this.userId = other.userId;
+        this.hotelId = other.hotelId;
+        this.checkIn = other.checkIn;
+        this.checkOut = other.checkOut;
+        this.people = other.people;
+        this.totalPrice = other.totalPrice;
+        this.extras = other.extras.isEmpty()
+                ? EnumSet.noneOf(ExtraService.class)
+                : EnumSet.copyOf(other.extras);
+        this.pointsUsed = other.pointsUsed;
+        this.status = other.status;
     }
 
     public long getId() {

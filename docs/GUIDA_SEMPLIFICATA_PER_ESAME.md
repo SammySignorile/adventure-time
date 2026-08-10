@@ -854,7 +854,7 @@ Il metodo:
 1. controlla i campi carta con `validCardFields()`;
 2. crea `BookingRequestBean` con `buildRequest()`;
 3. recupera il controller applicativo da `AppContext`;
-4. chiama `confirm(request)`.
+4. chiama `book(request)`.
 
 ### Passaggio 2 — AppContext
 
@@ -874,7 +874,7 @@ Questo metodo costruisce:
 Viene eseguito:
 
 ```java
-ManageBookingsApplicationController.confirm(request)
+ManageBookingsApplicationController.book(request)
 ```
 
 Il metodo:
@@ -966,7 +966,7 @@ CheckoutGraphicController.onConfirm()
 AppContext.manageBookingsController()
     │ crea BookingFacade e ManageBookingsApplicationController
     ▼
-ManageBookingsApplicationController.confirm(request)
+ManageBookingsApplicationController.book(request)
     ▼
 BookingFacade.createBooking(request)
     │

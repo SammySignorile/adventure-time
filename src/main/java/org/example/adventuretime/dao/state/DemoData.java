@@ -31,42 +31,81 @@ public final class DemoData {
                 4, "Matteo", "Leoncino", 34431,
                 "leoncino@gmail.com", "1234", Role.GESTORE));
 
-        state.getHotels().add(new HotelRoom(
-                1, 3, "Hotel Roma Center", "Roma", "Camera Singola",
-                "WiFi • Colazione inclusa • Piscina", "500m dal centro",
-                new BigDecimal("120.00"), "roma 1.jpg", 1));
-        state.getHotels().add(new HotelRoom(
-                2, 3, "Hotel Roma Termini", "Roma", "Camera Doppia",
-                "WiFi • Colazione • Aria condizionata", "300m dal centro",
-                new BigDecimal("110.00"), "roma 2.jpg", 2));
-        state.getHotels().add(new HotelRoom(
-                3, 3, "Hotel Colosseo View", "Roma", "Suite Deluxe",
-                "Vista Colosseo • WiFi • Spa", "150m dal centro",
-                new BigDecimal("280.00"), "roma 3.jpg", 4));
-        state.getHotels().add(new HotelRoom(
-                4, 4, "Hotel Trastevere Cozy", "Roma", "Camera Matrimoniale",
-                "WiFi • Colazione • Terrazza", "800m dal centro",
-                new BigDecimal("130.00"), "roma 4.jpg", 2));
-        state.getHotels().add(new HotelRoom(
-                5, 4, "Hotel Milano Luxury", "Milano", "Suite Deluxe",
-                "Spa • Piscina • Ristorante", "200m dal centro",
-                new BigDecimal("250.00"), "milano 1.jpg", 4));
-        state.getHotels().add(new HotelRoom(
-                6, 4, "Hotel Napoli Mare", "Napoli", "Camera Matrimoniale",
-                "Vista mare • WiFi • Colazione", "1km dal centro",
-                new BigDecimal("90.00"), "napoli 1.jpg", 2));
+        state.getHotels().add(withDetails(
+                hotel(1, 3, "Hotel Roma Center", "Camera Singola",
+                        "120.00", "roma 1.jpg", 1),
+                "WiFi • Colazione inclusa • Piscina", "500m dal centro"));
+        state.getHotels().add(withDetails(
+                hotel(2, 3, "Hotel Roma Termini", "Camera Doppia",
+                        "110.00", "roma 2.jpg", 2),
+                "WiFi • Colazione • Aria condizionata", "300m dal centro"));
+        state.getHotels().add(withDetails(
+                hotel(3, 3, "Hotel Colosseo View", "Suite Deluxe",
+                        "280.00", "roma 3.jpg", 4),
+                "Vista Colosseo • WiFi • Spa", "150m dal centro"));
+        state.getHotels().add(withDetails(
+                hotel(4, 4, "Hotel Trastevere Cozy", "Camera Matrimoniale",
+                        "130.00", "roma 4.jpg", 2),
+                "WiFi • Colazione • Terrazza", "800m dal centro"));
 
-        state.getBookings().add(new Booking(
-                1, 1, 1,
-                LocalDate.of(2026, 9, 10),
-                LocalDate.of(2026, 9, 15),
-                1,
-                new BigDecimal("600.00"),
-                Set.of(),
-                0,
-                BookingStatus.CONFIRMED));
+        HotelRoom milan = withDetails(
+                hotel(5, 4, "Hotel Milano Luxury", "Suite Deluxe",
+                        "250.00", "milano 1.jpg", 4),
+                "Spa • Piscina • Ristorante", "200m dal centro");
+        milan.setCity("Milano");
+        state.getHotels().add(milan);
+
+        HotelRoom naples = withDetails(
+                hotel(6, 4, "Hotel Napoli Mare", "Camera Matrimoniale",
+                        "90.00", "napoli 1.jpg", 2),
+                "Vista mare • WiFi • Colazione", "1km dal centro");
+        naples.setCity("Napoli");
+        state.getHotels().add(naples);
+
+        Booking booking = new Booking();
+        booking.setId(1);
+        booking.setUserId(1);
+        booking.setHotelId(1);
+        booking.setCheckIn(LocalDate.of(2026, 9, 10));
+        booking.setCheckOut(LocalDate.of(2026, 9, 15));
+        booking.setPeople(1);
+        booking.setTotalPrice(new BigDecimal("600.00"));
+        booking.setExtras(Set.of());
+        booking.setStatus(BookingStatus.CONFIRMED);
+        state.getBookings().add(booking);
 
         state.alignSequences();
         return state;
+    }
+
+    private static HotelRoom hotel(
+            long id,
+            long managerId,
+            String name,
+            String roomType,
+            String price,
+            String image,
+            int capacity
+    ) {
+        HotelRoom room = new HotelRoom();
+        room.setId(id);
+        room.setManagerId(managerId);
+        room.setName(name);
+        room.setCity("Roma");
+        room.setRoomType(roomType);
+        room.setPricePerNight(new BigDecimal(price));
+        room.setImageFileName(image);
+        room.setCapacity(capacity);
+        return room;
+    }
+
+    private static HotelRoom withDetails(
+            HotelRoom room,
+            String services,
+            String distance
+    ) {
+        room.setServices(services);
+        room.setDistanceFromCenter(distance);
+        return room;
     }
 }

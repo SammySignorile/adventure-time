@@ -61,6 +61,21 @@ public class StateBookingDAO implements BookingDAO {
     }
 
     @Override
+    public synchronized void updateStatus(
+            long bookingId,
+            BookingStatus status
+    ) throws PersistenceException {
+        Booking booking = store.getState().getBookings().stream()
+                .filter(item -> item.getId() == bookingId)
+                .findFirst()
+                .orElseThrow(() -> new PersistenceException(
+                        "La prenotazione selezionata non esiste."));
+
+        booking.setStatus(status);
+        store.persist();
+    }
+
+    @Override
     public synchronized boolean isHotelAvailable(
             long hotelId,
             LocalDate checkIn,
