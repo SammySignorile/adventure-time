@@ -8,7 +8,7 @@ package presentation {
 }
 package application {
   class LoginApplicationController
-  class BookingApplicationController
+  class ManageBookingsApplicationController
   class BookingFacade <<Facade>>
 }
 package persistence {
@@ -35,9 +35,9 @@ package session {
 
 LoginGraphicController --> LoginApplicationController
 LoginCLIGraphicController --> LoginApplicationController
-CheckoutGraphicController --> BookingApplicationController
-BookingCLIGraphicController --> BookingApplicationController
-BookingApplicationController --> BookingFacade
+CheckoutGraphicController --> ManageBookingsApplicationController
+BookingCLIGraphicController --> ManageBookingsApplicationController
+ManageBookingsApplicationController --> BookingFacade
 BookingFacade --> UserDAO
 BookingFacade --> HotelDAO
 BookingFacade --> BookingDAO

@@ -54,7 +54,7 @@ Gli aspetti più solidi sono:
 
 ### Biblioteca
 
-È utile il concetto di Facade come ingresso semplice per un sottosistema. Adventure Time usa `BookingFacade` per evitare che `BookingApplicationController` debba coordinare direttamente:
+È utile il concetto di Facade come ingresso semplice per un sottosistema. Adventure Time usa `BookingFacade` per evitare che `ManageBookingsApplicationController` debba coordinare direttamente:
 
 1. hotel DAO;
 2. booking DAO;

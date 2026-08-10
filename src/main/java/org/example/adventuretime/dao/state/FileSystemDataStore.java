@@ -5,6 +5,7 @@ import org.example.adventuretime.exception.PersistenceException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -42,28 +43,35 @@ public final class FileSystemDataStore implements DataStore {
             Path temporary = databasePath.resolveSibling(
                     databasePath.getFileName() + ".tmp");
 
-            try (ObjectOutputStream output = new ObjectOutputStream(
-                    Files.newOutputStream(temporary))) {
-                output.writeObject(state);
-            }
-
-            try {
-                Files.move(
-                        temporary,
-                        databasePath,
-                        StandardCopyOption.REPLACE_EXISTING,
-                        StandardCopyOption.ATOMIC_MOVE
-                );
-            } catch (IOException atomicMoveNotSupported) {
-                Files.move(
-                        temporary,
-                        databasePath,
-                        StandardCopyOption.REPLACE_EXISTING
-                );
-            }
+            writeTemporaryState(temporary);
+            replaceDatabaseFile(temporary);
         } catch (IOException e) {
             throw new PersistenceException(
                     "Impossibile salvare il database su file.", e);
+        }
+    }
+
+    private void writeTemporaryState(Path temporary) throws IOException {
+        try (ObjectOutputStream output = new ObjectOutputStream(
+                Files.newOutputStream(temporary))) {
+            output.writeObject(state);
+        }
+    }
+
+    private void replaceDatabaseFile(Path temporary) throws IOException {
+        try {
+            Files.move(
+                    temporary,
+                    databasePath,
+                    StandardCopyOption.REPLACE_EXISTING,
+                    StandardCopyOption.ATOMIC_MOVE
+            );
+        } catch (AtomicMoveNotSupportedException atomicMoveNotSupported) {
+            Files.move(
+                    temporary,
+                    databasePath,
+                    StandardCopyOption.REPLACE_EXISTING
+            );
         }
     }
 

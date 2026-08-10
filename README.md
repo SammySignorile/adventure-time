@@ -44,18 +44,21 @@ La configurazione predefinita è **GUI + DEMO + IN_MEMORY**.
 Configurazioni già incluse:
 
 ```bash
+# GUI, DEMO, dati soltanto in memoria (predefinita)
+mvn javafx:run
 
-mvn clean javafx:run
+# CLI, DEMO, dati soltanto in memoria
+mvn -Dadventure.config=/application-cli.properties javafx:run
 
+# GUI, FULL, persistenza su file
+mvn -Dadventure.config=/application-full-filesystem.properties javafx:run
+
+# GUI, FULL, persistenza MySQL
+mvn -Dadventure.config=/application-full-db.properties javafx:run
 ```
 
-Per la CLI, se il plugin JavaFX forza comunque il launcher grafico, eseguire:
-
-```bash
-mvn clean package
-java -Dadventure.config=/application-cli.properties \
-  -cp target/adventure-time-1.0.0.jar org.example.adventuretime.Main
-```
+`ConfigLoader` valida la coppia modalità/persistenza: DEMO accetta soltanto
+`IN_MEMORY`, mentre FULL richiede `FILESYSTEM` oppure `DB`.
 
 ## Account demo
 
@@ -64,12 +67,10 @@ java -Dadventure.config=/application-cli.properties \
 
 ## Foto degli hotel
 
-1. Creare la cartella `AdventureTimeImages` sul Desktop.
-2. Copiare nella cartella file come `roma 1.jpg`.
-3. Nel database salvare soltanto il nome nella colonna `nome_immagine`.
-4. La proprietà `hotel.images.path` indica la directory da usare.
-
-Il caricamento è gestito da `HotelImageLoader`. Se il file non esiste, la GUI mostra “Foto non disponibile”.
+Le immagini distribuite con l'applicazione si trovano in
+`src/main/resources/images`. Nel database e nello stato persistente viene
+salvato soltanto il nome del file. `HotelImageLoader` carica la risorsa dal
+classpath e, se non esiste, la GUI mostra “Foto non disponibile”.
 
 ## MySQL
 
@@ -82,10 +83,16 @@ Lo script principale è stato mantenuto volutamente semplice: tre tabelle, chiav
 ## Test
 
 ```bash
-mvn test
+mvn verify
 ```
 
-Sono presenti test per login, ricerca, prenotazione/Decorator e gestione hotel. Prima della consegna sostituire nei commenti di ciascuna classe di test il segnaposto con nome e matricola del responsabile.
+Sono presenti ventuno test automatici per configurazione, login, ricerca,
+prenotazione e Decorator. Prima della consegna va completata la matricola nei
+commenti di ciascuna classe di test e va verificato che l'assegnazione rispecchi
+quella effettiva del gruppo.
+
+Il comando `verify` esegue i test e genera il report di coverage JaCoCo in
+`target/site/jacoco/index.html`.
 
 ## Struttura della documentazione
 

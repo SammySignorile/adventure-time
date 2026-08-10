@@ -441,7 +441,7 @@ Non devono contenere SQL.
 
 ### Esempio
 
-`CheckoutGraphicController` legge checkbox, dati della carta e hotel selezionato, poi invoca `BookingApplicationController`.
+`CheckoutGraphicController` legge checkbox, dati della carta e hotel selezionato, poi invoca `ManageBookingsApplicationController`.
 
 ---
 
@@ -509,7 +509,7 @@ FlowContext = cosa sta facendo in questo momento
 
 `BookingFacade` coordina tutte le operazioni necessarie a creare una prenotazione.
 
-Senza Facade, `BookingApplicationController` dovrebbe conoscere:
+Senza Facade, `ManageBookingsApplicationController` dovrebbe conoscere:
 
 - validazione;
 - hotel DAO;
@@ -583,7 +583,7 @@ Esempio della lista hotel:
 ```text
 HotelListGraphicController
         ↓ chiede
-SearchHotelApplicationController
+ManageBookingsApplicationController
         ↓ legge il buffer
 FlowContext
         ↓ restituisce
@@ -820,7 +820,7 @@ Prima della conferma ci sono due momenti diversi:
 
 1. chiama `buildRequest()`;
 2. crea `BookingRequestBean`;
-3. richiama `BookingApplicationController.getQuote()`;
+3. richiama `ManageBookingsApplicationController.getQuote()`;
 4. il controller applicativo delega a `BookingFacade.quote()`;
 5. la Facade calcola prezzo base, extra, punti e totale;
 6. il controller grafico aggiorna le Label.
@@ -867,14 +867,14 @@ AppContext.manageBookingsController()
 Questo metodo costruisce:
 
 1. `BookingFacade` con i tre DAO;
-2. `BookingApplicationController` con Facade e `FlowContext`.
+2. `ManageBookingsApplicationController` con Facade e `FlowContext`.
 
 ### Passaggio 3 — Application Controller
 
 Viene eseguito:
 
 ```java
-BookingApplicationController.confirm(request)
+ManageBookingsApplicationController.confirm(request)
 ```
 
 Il metodo:
@@ -941,7 +941,7 @@ Il risultato torna lungo la catena:
 ```text
 JdbcBookingDAO
 → BookingFacade
-→ BookingApplicationController
+→ ManageBookingsApplicationController
 → CheckoutGraphicController
 ```
 
@@ -964,14 +964,14 @@ CheckoutGraphicController.onConfirm()
     │ buildRequest()
     ▼
 AppContext.manageBookingsController()
-    │ crea BookingFacade e BookingApplicationController
+    │ crea BookingFacade e ManageBookingsApplicationController
     ▼
-BookingApplicationController.confirm(request)
+ManageBookingsApplicationController.confirm(request)
     ▼
 BookingFacade.createBooking(request)
     │
     ├── quote(request)
-    │     ├── BeanValidator.validateBookingRequest()
+    │     ├── BookingRequestBean.validateSyntax()
     │     ├── requireTraveler()
     │     ├── HotelDAO.findById()
     │     ├── calcolo numero notti
@@ -990,7 +990,7 @@ BookingFacade.createBooking(request)
     ├── UserSession.updatePoints()
     └── restituisce BookingBean
     ▼
-BookingApplicationController
+ManageBookingsApplicationController
     │ FlowContext.clearBookingFlow()
     ▼
 CheckoutGraphicController

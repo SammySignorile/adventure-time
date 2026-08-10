@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/** Responsabile test: INSERIRE NOME, COGNOME E MATRICOLA. */
+/** Responsabile test: Sammy Signorile (matricola da inserire). */
 class LoginApplicationControllerTest {
 
     private LoginApplicationController controller;

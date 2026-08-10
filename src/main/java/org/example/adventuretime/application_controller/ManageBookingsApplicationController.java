@@ -21,6 +21,7 @@ import org.example.adventuretime.session.UserSession;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -239,7 +240,8 @@ public final class ManageBookingsApplicationController {
             );
         }
 
-        if (criteria.getCheckIn().isBefore(LocalDate.now())) {
+        if (criteria.getCheckIn().isBefore(
+                LocalDate.now(ZoneId.systemDefault()))) {
             throw new ValidationException(
                     "La data di arrivo non può essere nel passato."
             );
@@ -255,7 +257,8 @@ public final class ManageBookingsApplicationController {
             );
         }
 
-        if (request.getCheckIn().isBefore(LocalDate.now())) {
+        if (request.getCheckIn().isBefore(
+                LocalDate.now(ZoneId.systemDefault()))) {
             throw new ValidationException(
                     "La data di arrivo non può essere nel passato."
             );

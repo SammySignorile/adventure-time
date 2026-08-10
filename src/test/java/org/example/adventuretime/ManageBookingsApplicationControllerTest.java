@@ -20,7 +20,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/** Responsabile test: INSERIRE NOME, COGNOME E MATRICOLA. */
+/** Responsabile test: Sammy Signorile (matricola da inserire). */
 class ManageBookingsApplicationControllerTest {
 
     private static final LocalDate CHECK_IN = LocalDate.of(2027, 11, 1);

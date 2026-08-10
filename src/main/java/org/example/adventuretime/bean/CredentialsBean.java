@@ -2,17 +2,11 @@ package org.example.adventuretime.bean;
 
 import org.example.adventuretime.exception.ValidationException;
 
-import java.util.regex.Pattern;
-
 /**
  * Bean di input usato dal caso d'uso di login.
  * Contiene soltanto controlli formali sui dati inseriti dall'utente.
  */
 public class CredentialsBean {
-
-    private static final Pattern EMAIL_PATTERN = Pattern.compile(
-            "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"
-    );
 
     private String email;
     private String password;
@@ -50,12 +44,26 @@ public class CredentialsBean {
             throw new ValidationException("L'email è obbligatoria.");
         }
 
-        if (!EMAIL_PATTERN.matcher(email.trim()).matches()) {
+        if (!isValidEmail(email.trim())) {
             throw new ValidationException("Il formato dell'email non è valido.");
         }
 
         if (password == null || password.isBlank()) {
             throw new ValidationException("La password è obbligatoria.");
         }
+    }
+
+    private static boolean isValidEmail(String value) {
+        int atIndex = value.indexOf('@');
+        if (atIndex <= 0 || atIndex != value.lastIndexOf('@')) {
+            return false;
+        }
+
+        int dotIndex = value.indexOf('.', atIndex + 2);
+        if (dotIndex < 0 || dotIndex == value.length() - 1) {
+            return false;
+        }
+
+        return value.chars().noneMatch(Character::isWhitespace);
     }
 }

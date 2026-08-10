@@ -75,8 +75,8 @@ Per ogni caso d'uso esistono boundary diverse:
 | Caso d'uso | JavaFX | CLI | Controller applicativo comune |
 |---|---|---|---|
 | Login | `LoginGraphicController` | `LoginCLIGraphicController` | `LoginApplicationController` |
-| Ricerca hotel | `SearchHotelGraphicController` | `SearchHotelCLIGraphicController` | `SearchHotelApplicationController` |
-| Prenotazione | `CheckoutGraphicController` | `BookingCLIGraphicController` | `BookingApplicationController` |
+| Ricerca hotel | `SearchHotelGraphicController` | `SearchHotelCLIGraphicController` | `ManageBookingsApplicationController` |
+| Prenotazione | `CheckoutGraphicController` | `BookingCLIGraphicController` | `ManageBookingsApplicationController` |
 | Profilo | `ProfileGraphicController` | `ProfileCLIGraphicController` | `ProfileApplicationController` |
 | Gestione hotel | `ManageHotelsGraphicController` | `ManageHotelCLIGraphicController` | `ManageHotelApplicationController` |
 
@@ -189,7 +189,7 @@ Le query sono parametrizzate con `PreparedStatement`.
 
 ## 8. Ricerca hotel
 
-`SearchHotelApplicationController.search()` esegue:
+`ManageBookingsApplicationController.search()` esegue:
 
 1. verifica ruolo;
 2. validazione del Bean;

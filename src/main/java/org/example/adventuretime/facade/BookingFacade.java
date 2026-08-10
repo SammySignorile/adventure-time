@@ -62,7 +62,7 @@ public final class BookingFacade {
             );
         }
 
-        // Controllo difensivo: il BeanValidator non è più necessario.
+        // La validazione sintattica resta responsabilità del bean di input.
         request.validateSyntax();
 
         UserBean user = requireTraveler();

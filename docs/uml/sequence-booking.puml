@@ -2,9 +2,8 @@
 actor Viaggiatore
 boundary CheckoutGraphicController as GUI
 control AppContext as CTX
-control BookingApplicationController as AC
+control ManageBookingsApplicationController as AC
 control BookingFacade as FACADE
-control BeanValidator as VALIDATOR
 participant UserSession as SESSION
 participant HotelDAO as HDAO
 participant BookingPriceDecoratorFactory as DECORATOR
@@ -18,7 +17,7 @@ GUI -> FLOW : getSelectedHotel()\ngetLastCriteria()
 FLOW --> GUI : HotelBean + SearchCriteriaBean
 GUI -> AC : getQuote(BookingRequestBean)
 AC -> FACADE : quote(request)
-FACADE -> VALIDATOR : validateBookingRequest(request)
+FACADE -> FACADE : request.validateSyntax()
 FACADE -> SESSION : isTraveler() / requireUser()
 SESSION --> FACADE : UserBean
 FACADE -> HDAO : findById(hotelId)
@@ -33,7 +32,7 @@ GUI -> GUI : aggiorna prezzi nelle Label
 Viaggiatore -> GUI : preme Conferma
 GUI -> GUI : validCardFields()\nbuildRequest()
 GUI -> CTX : manageBookingsController()
-CTX --> GUI : BookingApplicationController
+CTX --> GUI : ManageBookingsApplicationController
 GUI -> AC : confirm(request)
 AC -> FACADE : createBooking(request)
 

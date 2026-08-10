@@ -9,4 +9,4 @@
 7. Rimosse le stored procedure: i DAO usano query parametrizzate con `PreparedStatement` e non ne hanno bisogno.
 8. Rimossi `CHARACTER SET`, `COLLATE`, indici avanzati e vincoli nominati per rendere lo script più semplice da spiegare.
 9. Sono rimaste le chiavi esterne essenziali, perché impediscono di creare prenotazioni collegate a utenti o hotel inesistenti.
-10. I controlli più specifici, come date valide, prezzo positivo e capienza, vengono eseguiti nella logica Java tramite `BeanValidator` e controller applicativi.
+10. I controlli più specifici, come date valide, prezzo positivo e capienza, vengono eseguiti dai Bean di input e dai controller applicativi.
