@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.adventuretime.ui.gui.controller.VendorHomeGraphicController"
+            styleClass="page-background">
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20" styleClass="top-bar">
+            <padding><Insets top="18" right="25" bottom="18" left="25"/></padding>
+            <Label text="Adventure Time • Area venditore" styleClass="brand-small"/>
+            <Label fx:id="welcomeLabel" styleClass="top-welcome"/>
+        </HBox>
+    </top>
+    <center>
+        <VBox alignment="CENTER" spacing="22">
+            <Label text="Gestisci la tua offerta" styleClass="section-title"/>
+            <Button text="Strutture e prenotazioni ricevute" onAction="#onManageHotelsClick"
+                    prefWidth="330" prefHeight="52" styleClass="primary-button"/>
+            <Button text="Profilo" onAction="#onProfileClick"
+                    prefWidth="330" prefHeight="52" styleClass="secondary-button"/>
+            <Button text="Logout" onAction="#onLogoutClick"
+                    prefWidth="330" styleClass="danger-button"/>
+        </VBox>
+    </center>
+</BorderPane>

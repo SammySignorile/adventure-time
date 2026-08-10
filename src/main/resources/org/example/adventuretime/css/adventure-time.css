@@ -1,0 +1,145 @@
+.root {
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+    -fx-font-size: 14px;
+}
+
+.page-background {
+    -fx-background-color: linear-gradient(to bottom right, #eef4ff, #f7f9fc);
+}
+
+.top-bar {
+    -fx-background-color: linear-gradient(to right, #173b70, #2862a8);
+}
+
+.surface-card, .hotel-card {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-border-color: #dbe4ef;
+    -fx-effect: dropshadow(gaussian, rgba(23, 59, 112, 0.12), 14, 0, 0, 4);
+}
+
+.hotel-card:hover {
+    -fx-border-color: #2d72c7;
+}
+
+.brand-title {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #173b70;
+}
+
+.brand-small {
+    -fx-font-size: 21px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.top-welcome {
+    -fx-text-fill: #eaf2ff;
+    -fx-font-size: 16px;
+}
+
+.subtitle, .muted-label, .configuration-label, .hint-label {
+    -fx-text-fill: #617286;
+}
+
+.hint-label {
+    -fx-font-size: 12px;
+}
+
+.section-title {
+    -fx-font-size: 23px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #18334f;
+}
+
+.subsection-title, .card-title {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #18334f;
+}
+
+.price-label, .total-label {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #176b43;
+}
+
+.points-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #176b43;
+}
+
+.button {
+    -fx-cursor: hand;
+    -fx-background-radius: 9;
+    -fx-padding: 9 16;
+}
+
+.primary-button {
+    -fx-background-color: #2467ad;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.primary-button:hover {
+    -fx-background-color: #1b528d;
+}
+
+.secondary-button {
+    -fx-background-color: white;
+    -fx-text-fill: #1e5794;
+    -fx-border-color: #2d72c7;
+    -fx-border-radius: 9;
+}
+
+.danger-button {
+    -fx-background-color: #d34a4a;
+    -fx-text-fill: white;
+}
+
+.ghost-button {
+    -fx-background-color: rgba(255,255,255,0.17);
+    -fx-text-fill: white;
+}
+
+.text-field, .password-field, .date-picker {
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #cbd7e5;
+    -fx-background-color: white;
+    -fx-padding: 8;
+}
+
+.table-view {
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #dbe4ef;
+}
+
+.transparent-scroll,
+.transparent-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.empty-message {
+    -fx-font-size: 16px;
+    -fx-text-fill: #617286;
+    -fx-padding: 30;
+}
+
+.hotel-image-box {
+    -fx-background-color: #edf2f7;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #d4deea;
+}
+
+.missing-image-label {
+    -fx-text-fill: #617286;
+    -fx-font-size: 12px;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-padding: 10;
+}

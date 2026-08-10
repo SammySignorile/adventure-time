@@ -1,0 +1,31 @@
+@startuml
+start
+:Inserisce criteri di ricerca;
+:Valida criteri;
+if (Criteri validi?) then (sì)
+  :Carica hotel compatibili;
+  :Filtra hotel occupati;
+  if (Risultati presenti?) then (sì)
+    :Seleziona hotel;
+    :Seleziona extra e punti;
+    :Calcola preventivo con Decorator;
+    if (Conferma?) then (sì)
+      :Ricontrolla disponibilità;
+      if (Ancora disponibile?) then (sì)
+        :Salva prenotazione;
+        :Aggiorna punti;
+        :Svuota FlowContext;
+      else (no)
+        :Mostra HotelUnavailableException;
+      endif
+    else (no)
+      :Nessuna scrittura persistente;
+    endif
+  else (no)
+    :Mostra nessun risultato;
+  endif
+else (no)
+  :Mostra ValidationException;
+endif
+stop
+@enduml

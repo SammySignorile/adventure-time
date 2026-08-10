@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.adventuretime.ui.gui.controller.CheckoutGraphicController"
+            styleClass="page-background">
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="15" styleClass="top-bar">
+            <padding><Insets top="16" right="22" bottom="16" left="22"/></padding>
+            <Button text="← Risultati" onAction="#onBack" styleClass="ghost-button"/>
+            <Label text="Riepilogo prenotazione" styleClass="brand-small"/>
+        </HBox>
+    </top>
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="transparent-scroll">
+            <content>
+                <VBox spacing="18" maxWidth="760">
+                    <padding><Insets top="25" right="35" bottom="30" left="35"/></padding>
+                    <HBox spacing="18" alignment="CENTER_LEFT" styleClass="surface-card">
+                        <padding><Insets top="20" right="24" bottom="20" left="24"/></padding>
+                        <StackPane prefWidth="220" prefHeight="145" minWidth="220" minHeight="145"
+                                   styleClass="hotel-image-box">
+                            <ImageView fx:id="hotelImageView"
+                                       fitWidth="220" fitHeight="145"
+                                       preserveRatio="false" smooth="true"/>
+                            <Label fx:id="missingImageLabel"
+                                   text="Foto non disponibile"
+                                   styleClass="missing-image-label"/>
+                        </StackPane>
+                        <VBox spacing="8" HBox.hgrow="ALWAYS">
+                            <Label fx:id="hotelLabel" styleClass="card-title" wrapText="true"/>
+                            <Label fx:id="stayLabel" styleClass="muted-label" wrapText="true"/>
+                        </VBox>
+                    </HBox>
+
+                    <VBox spacing="12" styleClass="surface-card">
+                        <padding><Insets top="20" right="24" bottom="20" left="24"/></padding>
+                        <Label text="Servizi extra" styleClass="subsection-title"/>
+                        <CheckBox fx:id="cancellationInsuranceCheck" text="Assicurazione annullamento (+80€)" onAction="#onOptionsChanged"/>
+                        <CheckBox fx:id="healthInsuranceCheck" text="Assicurazione medica (+50€)" onAction="#onOptionsChanged"/>
+                        <CheckBox fx:id="flexibleDateCheck" text="Cambio data flessibile (+40€)" onAction="#onOptionsChanged"/>
+                        <Separator/>
+                        <CheckBox fx:id="usePointsCheck" text="Usa i punti fedeltà" onAction="#onOptionsChanged"/>
+                        <Label fx:id="pointsAvailableLabel" styleClass="muted-label"/>
+                    </VBox>
+
+                    <GridPane hgap="20" vgap="10" styleClass="surface-card">
+                        <padding><Insets top="20" right="24" bottom="20" left="24"/></padding>
+                        <Label text="Prezzo base" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <Label fx:id="basePriceLabel" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                        <Label text="Extra" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <Label fx:id="extrasPriceLabel" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                        <Label text="Sconto punti" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                        <Label fx:id="discountLabel" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                        <Label text="Totale" styleClass="subsection-title" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                        <Label fx:id="totalLabel" styleClass="total-label" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                    </GridPane>
+
+                    <GridPane hgap="14" vgap="12" styleClass="surface-card">
+                        <padding><Insets top="20" right="24" bottom="20" left="24"/></padding>
+                        <Label text="Dati carta (simulazione)" styleClass="subsection-title" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2"/>
+                        <TextField fx:id="cardNumberField" promptText="Numero carta" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="2" prefWidth="520"/>
+                        <TextField fx:id="expiryField" promptText="MM/AA" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                        <TextField fx:id="cvvField" promptText="CVV" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                        <TextField fx:id="cardHolderField" promptText="Nome intestatario" GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="2"/>
+                    </GridPane>
+
+                    <Button text="Conferma prenotazione" onAction="#onConfirm"
+                            prefHeight="48" styleClass="primary-button" maxWidth="Infinity"/>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>
