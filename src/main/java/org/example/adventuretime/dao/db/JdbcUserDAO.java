@@ -5,7 +5,6 @@ import org.example.adventuretime.exception.PersistenceException;
 import org.example.adventuretime.model.Role;
 import org.example.adventuretime.model.User;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,8 +30,8 @@ public final class JdbcUserDAO implements UserDAO {
                 WHERE email = ? AND password = ?
                 """;
 
-        try (Connection connection = connectionManager.openConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connectionManager.getConnection()
+                .prepareStatement(sql)) {
             statement.setString(1, email);
             statement.setString(2, password);
 
@@ -55,8 +54,8 @@ public final class JdbcUserDAO implements UserDAO {
                 WHERE id = ?
                 """;
 
-        try (Connection connection = connectionManager.openConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connectionManager.getConnection()
+                .prepareStatement(sql)) {
             statement.setLong(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 return resultSet.next()
@@ -78,8 +77,8 @@ public final class JdbcUserDAO implements UserDAO {
                 """;
         List<User> users = new ArrayList<>();
 
-        try (Connection connection = connectionManager.openConnection();
-             PreparedStatement statement = connection.prepareStatement(sql);
+        try (PreparedStatement statement = connectionManager.getConnection()
+                .prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 users.add(mapUser(resultSet));
@@ -100,8 +99,8 @@ public final class JdbcUserDAO implements UserDAO {
     public void updatePoints(long userId, int newPoints)
             throws PersistenceException {
         String sql = "UPDATE users SET punti = ? WHERE id = ?";
-        try (Connection connection = connectionManager.openConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connectionManager.getConnection()
+                .prepareStatement(sql)) {
             statement.setInt(1, newPoints);
             statement.setLong(2, userId);
             int rows = statement.executeUpdate();
@@ -121,8 +120,8 @@ public final class JdbcUserDAO implements UserDAO {
                 VALUES (?, ?, ?, ?, ?, ?)
                 """;
 
-        try (Connection connection = connectionManager.openConnection();
-             PreparedStatement statement = connection.prepareStatement(
+        try (PreparedStatement statement = connectionManager.getConnection()
+                .prepareStatement(
                      sql, Statement.RETURN_GENERATED_KEYS)) {
             bindUser(statement, user);
             statement.executeUpdate();
@@ -150,8 +149,8 @@ public final class JdbcUserDAO implements UserDAO {
                 WHERE id = ?
                 """;
 
-        try (Connection connection = connectionManager.openConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connectionManager.getConnection()
+                .prepareStatement(sql)) {
             bindUser(statement, user);
             statement.setLong(7, user.getId());
             int rows = statement.executeUpdate();

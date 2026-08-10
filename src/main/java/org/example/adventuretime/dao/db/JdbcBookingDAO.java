@@ -6,7 +6,6 @@ import org.example.adventuretime.model.Booking;
 import org.example.adventuretime.model.BookingStatus;
 import org.example.adventuretime.model.ExtraService;
 
-import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,8 +35,8 @@ public final class JdbcBookingDAO implements BookingDAO {
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
-        try (Connection connection = connectionManager.openConnection();
-             PreparedStatement statement = connection.prepareStatement(
+        try (PreparedStatement statement = connectionManager.getConnection()
+                .prepareStatement(
                      sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setLong(1, booking.getUserId());
             statement.setLong(2, booking.getHotelId());
@@ -94,6 +93,25 @@ public final class JdbcBookingDAO implements BookingDAO {
     }
 
     @Override
+    public void updateStatus(long bookingId, BookingStatus status)
+            throws PersistenceException {
+        String sql = "UPDATE bookings SET stato = ? WHERE id = ?";
+
+        try (PreparedStatement statement = connectionManager.getConnection()
+                .prepareStatement(sql)) {
+            statement.setString(1, status.name());
+            statement.setLong(2, bookingId);
+            if (statement.executeUpdate() == 0) {
+                throw new PersistenceException(
+                        "La prenotazione selezionata non esiste.");
+            }
+        } catch (SQLException e) {
+            throw new PersistenceException(
+                    "Errore durante l'aggiornamento della prenotazione.", e);
+        }
+    }
+
+    @Override
     public boolean isHotelAvailable(
             long hotelId,
             LocalDate checkIn,
@@ -108,8 +126,8 @@ public final class JdbcBookingDAO implements BookingDAO {
                   AND check_out > ?
                 """;
 
-        try (Connection connection = connectionManager.openConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connectionManager.getConnection()
+                .prepareStatement(sql)) {
             statement.setLong(1, hotelId);
             statement.setDate(2, Date.valueOf(checkOut));
             statement.setDate(3, Date.valueOf(checkIn));
@@ -128,8 +146,8 @@ public final class JdbcBookingDAO implements BookingDAO {
             long parameter
     ) throws PersistenceException {
         List<Booking> bookings = new ArrayList<>();
-        try (Connection connection = connectionManager.openConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connectionManager.getConnection()
+                .prepareStatement(sql)) {
             statement.setLong(1, parameter);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -145,18 +163,19 @@ public final class JdbcBookingDAO implements BookingDAO {
 
     private static Booking mapBooking(ResultSet resultSet)
             throws SQLException {
-        return new Booking(
-                resultSet.getLong("id"),
-                resultSet.getLong("user_id"),
-                resultSet.getLong("hotel_id"),
-                resultSet.getDate("check_in").toLocalDate(),
-                resultSet.getDate("check_out").toLocalDate(),
-                resultSet.getInt("persone"),
-                resultSet.getBigDecimal("prezzo_totale"),
-                deserializeExtras(resultSet.getString("extras")),
-                resultSet.getInt("punti_usati"),
-                BookingStatus.valueOf(resultSet.getString("stato"))
-        );
+        Booking booking = new Booking();
+        booking.setId(resultSet.getLong("id"));
+        booking.setUserId(resultSet.getLong("user_id"));
+        booking.setHotelId(resultSet.getLong("hotel_id"));
+        booking.setCheckIn(resultSet.getDate("check_in").toLocalDate());
+        booking.setCheckOut(resultSet.getDate("check_out").toLocalDate());
+        booking.setPeople(resultSet.getInt("persone"));
+        booking.setTotalPrice(resultSet.getBigDecimal("prezzo_totale"));
+        booking.setExtras(deserializeExtras(resultSet.getString("extras")));
+        booking.setPointsUsed(resultSet.getInt("punti_usati"));
+        booking.setStatus(BookingStatus.valueOf(
+                resultSet.getString("stato")));
+        return booking;
     }
 
     private static String serializeExtras(Set<ExtraService> extras) {

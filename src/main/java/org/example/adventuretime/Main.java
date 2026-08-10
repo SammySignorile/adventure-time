@@ -27,6 +27,17 @@ public final class Main {
             applicationInterface.start(args);
         } catch (AdventureTimeException | RuntimeException e) {
             LOGGER.log(Level.SEVERE, "Avvio non riuscito", e);
+        } finally {
+            closeApplicationResources();
+        }
+    }
+
+    private static void closeApplicationResources() {
+        try {
+            AppContext.shutdown();
+        } catch (AdventureTimeException e) {
+            LOGGER.log(Level.WARNING,
+                    "Chiusura delle risorse non completata", e);
         }
     }
 }

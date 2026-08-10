@@ -9,6 +9,7 @@ import org.example.adventuretime.dao.DAOFactory;
 import org.example.adventuretime.dao.HotelDAO;
 import org.example.adventuretime.dao.UserDAO;
 import org.example.adventuretime.facade.BookingFacade;
+import org.example.adventuretime.exception.PersistenceException;
 import org.example.adventuretime.navigation.SceneRouter;
 import org.example.adventuretime.session.FlowContext;
 import org.example.adventuretime.session.UserSession;
@@ -24,6 +25,7 @@ public final class AppContext {
     private final AppConfig config;
     private final UserSession userSession;
     private final FlowContext flowContext;
+    private final DAOFactory daoFactory;
 
     private final LoginApplicationController loginController;
     private final ManageBookingsApplicationController manageBookingsController;
@@ -33,6 +35,7 @@ public final class AppContext {
 
     private AppContext(AppConfig config, DAOFactory daoFactory) {
         this.config = config;
+        this.daoFactory = daoFactory;
         this.userSession = new UserSession();
         this.flowContext = new FlowContext();
 
@@ -93,16 +96,15 @@ public final class AppContext {
         instance = null;
     }
 
+    public static synchronized void shutdown() throws PersistenceException {
+        if (instance != null) {
+            instance.daoFactory.close();
+            instance = null;
+        }
+    }
+
     public AppConfig getConfig() {
         return config;
-    }
-
-    public UserSession getUserSession() {
-        return userSession;
-    }
-
-    public FlowContext getFlowContext() {
-        return flowContext;
     }
 
     public LoginApplicationController loginController() {

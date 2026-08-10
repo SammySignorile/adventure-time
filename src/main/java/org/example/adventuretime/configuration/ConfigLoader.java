@@ -53,11 +53,15 @@ public final class ConfigLoader {
                 readEnum(properties, "persistence.mode", PersistenceMode.class),
                 readPath(properties, "filesystem.path"),
                 readPath(properties, "hotel.images.path"),
-                require(properties, "db.url"),
-                require(properties, "db.user"),
-                require(properties, "db.password"),
-                readPositiveDouble(properties, "gui.width"),
-                readPositiveDouble(properties, "gui.height")
+                new DatabaseConfig(
+                        require(properties, "db.url"),
+                        require(properties, "db.user"),
+                        require(properties, "db.password")
+                ),
+                new WindowConfig(
+                        readPositiveDouble(properties, "gui.width"),
+                        readPositiveDouble(properties, "gui.height")
+                )
         );
 
         validateModes(config);

@@ -58,9 +58,15 @@ public final class CheckoutGraphicController {
 
     @FXML
     private void initialize() {
-        var flow = AppContext.getInstance().getFlowContext();
-        hotel = flow.getSelectedHotel().orElse(null);
-        criteria = flow.getLastCriteria().orElse(null);
+        var context = AppContext.getInstance();
+        var controller = context.manageBookingsController();
+        try {
+            hotel = controller.getSelectedHotel();
+            criteria = controller.getCurrentSearchCriteria();
+        } catch (AdventureTimeException e) {
+            AlertHelper.error(e.getMessage());
+            return;
+        }
 
         if (hotel == null || criteria == null) {
             AlertHelper.error("Il flusso di prenotazione non contiene dati validi.");
@@ -73,9 +79,17 @@ public final class CheckoutGraphicController {
                 + criteria.getCheckOut() + " | " + criteria.getPeople()
                 + " persone");
         pointsAvailableLabel.setText("Punti disponibili: "
-                + AppContext.getInstance().getUserSession()
-                .requireUser().getPoints());
+                + currentUserPoints(context));
         refreshQuote();
+    }
+
+    private int currentUserPoints(AppContext context) {
+        try {
+            return context.loginController().getCurrentUser().getPoints();
+        } catch (AdventureTimeException e) {
+            AlertHelper.error(e.getMessage());
+            return 0;
+        }
     }
 
     private void showHotelImage(String imageFileName) {
@@ -101,7 +115,7 @@ public final class CheckoutGraphicController {
         try {
             var booking = AppContext.getInstance()
                     .manageBookingsController()
-                    .confirm(buildRequest());
+                    .book(buildRequest());
             AlertHelper.info("Prenotazione confermata",
                     "Codice prenotazione: " + booking.getId()
                             + "\nTotale: €" + booking.getTotalPrice());

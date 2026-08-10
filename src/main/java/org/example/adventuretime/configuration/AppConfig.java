@@ -7,17 +7,13 @@ import java.nio.file.Path;
  *
  * È un record perché questi dati non devono cambiare mentre l'app è in esecuzione.
  */
-@SuppressWarnings("java:S107")
 public record AppConfig(
         UiMode uiMode,
         AppMode appMode,
         PersistenceMode persistenceMode,
         Path fileSystemPath,
         Path hotelImagesPath,
-        String databaseUrl,
-        String databaseUser,
-        String databasePassword,
-        double guiWidth,
-        double guiHeight
+        DatabaseConfig database,
+        WindowConfig window
 ) {
 }

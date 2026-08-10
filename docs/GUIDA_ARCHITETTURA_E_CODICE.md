@@ -75,10 +75,12 @@ Per ogni caso d'uso esistono boundary diverse:
 | Caso d'uso | JavaFX | CLI | Controller applicativo comune |
 |---|---|---|---|
 | Login | `LoginGraphicController` | `LoginCLIGraphicController` | `LoginApplicationController` |
-| Ricerca hotel | `SearchHotelGraphicController` | `SearchHotelCLIGraphicController` | `ManageBookingsApplicationController` |
-| Prenotazione | `CheckoutGraphicController` | `BookingCLIGraphicController` | `ManageBookingsApplicationController` |
-| Profilo | `ProfileGraphicController` | `ProfileCLIGraphicController` | `ProfileApplicationController` |
-| Gestione hotel | `ManageHotelsGraphicController` | `ManageHotelCLIGraphicController` | `ManageHotelApplicationController` |
+| Gestire una prenotazione / Prenotare | `SearchHotelGraphicController`, `CheckoutGraphicController` | `SearchHotelCLIGraphicController`, `BookingCLIGraphicController` | `ManageBookingsApplicationController` |
+| Gestire prenotazioni ricevute | `ManageHotelsGraphicController` | `ManageHotelCLIGraphicController` | `ManageHotelsApplicationController` |
+
+Il profilo e la gestione del catalogo sono viste di supporto che riusano questi
+controller: non esistono controller applicativi inventati soltanto per una
+schermata.
 
 “Due interfacce” non significa duplicare la business logic. Significa duplicare soltanto il codice di presentazione necessario a leggere input e mostrare output.
 
@@ -167,7 +169,11 @@ Gli application controller dipendono da queste interfacce, non dalle classi conc
 
 - `InMemoryDAOFactory`: tutti i DAO lavorano sullo stesso `InMemoryDataStore`;
 - `FileSystemDAOFactory`: tutti lavorano sullo stesso `FileSystemDataStore`;
-- `JdbcDAOFactory`: tutti usano lo stesso provider di parametri JDBC.
+- `JdbcDAOFactory`: tutti condividono lo stesso `DBConnectionManager`.
+
+In modalita DB viene mantenuta una sola connessione attiva. I DAO chiudono
+`PreparedStatement` e `ResultSet` con try-with-resources; `AppContext` chiude la
+connessione quando termina l'applicazione.
 
 Non è corretto mescolare, per esempio, `JdbcUserDAO` con `InMemoryBookingDAO` nello stesso avvio: la factory impedisce questa incoerenza.
 
@@ -290,6 +296,13 @@ I DAO trasformano le eccezioni tecniche in `PersistenceException`. I controller 
 - **High Cohesion**: ogni controller gestisce un solo flusso.
 - **Indirection**: mapper, facade e factory separano livelli che non devono conoscersi direttamente.
 - **Protected Variations**: UI e persistence possono cambiare senza modificare il caso d'uso.
+- **Law of Demeter**: GUI e CLI parlano con gli application controller; non
+  navigano direttamente dentro `UserSession` o `FlowContext`.
+
+I pattern GoF sono usati soltanto dove risolvono un problema concreto:
+`DAOFactory` crea una famiglia coerente di DAO, `AppContext` offre un unico
+contesto applicativo e i Decorator aggiungono gli extra al prezzo mantenendo
+la stessa interfaccia `BookingPriceComponent`.
 
 ---
 
@@ -303,7 +316,7 @@ Una dimostrazione efficace dura pochi minuti:
 4. ricerca e preventivo con un extra;
 5. conferma e profilo;
 6. logout e login venditore;
-7. mostrare la prenotazione ricevuta;
+7. mostrare e annullare la prenotazione ricevuta;
 8. cambiare configurazione in CLI o filesystem;
 9. mostrare `DAOFactory`, un controller applicativo e il Decorator;
 10. eseguire i test e mostrare SonarCloud.

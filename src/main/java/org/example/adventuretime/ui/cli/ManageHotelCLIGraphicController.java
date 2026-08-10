@@ -77,7 +77,20 @@ public final class ManageHotelCLIGraphicController {
                             + " | " + booking.getCheckIn()
                             + " -> " + booking.getCheckOut()
                             + " | persone " + booking.getPeople()
-                            + " | €" + booking.getTotalPrice()));
+                            + " | €" + booking.getTotalPrice()
+                            + " | " + booking.getStatus()));
+        } catch (AdventureTimeException e) {
+            io.error(e.getMessage());
+        }
+    }
+
+    public void cancelReceivedBooking() {
+        long id = io.readLong("Id prenotazione da annullare: ");
+        try {
+            AppContext.getInstance()
+                    .manageHotelsController()
+                    .cancelReceivedBooking(id);
+            io.info("Prenotazione annullata.");
         } catch (AdventureTimeException e) {
             io.error(e.getMessage());
         }

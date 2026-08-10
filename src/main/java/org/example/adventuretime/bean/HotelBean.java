@@ -8,7 +8,6 @@ import java.math.BigDecimal;
  * Bean usato per mostrare e inserire i dati di una struttura.
  * imageFileName contiene soltanto il nome del file, non il percorso completo.
  */
-@SuppressWarnings("java:S107")
 public class HotelBean {
 
     private long id;
@@ -24,30 +23,6 @@ public class HotelBean {
 
     public HotelBean() {
         // Costruttore vuoto utile ai form JavaFX e CLI.
-    }
-
-    public HotelBean(
-            long id,
-            long managerId,
-            String name,
-            String city,
-            String roomType,
-            String services,
-            String distanceFromCenter,
-            BigDecimal pricePerNight,
-            String imageFileName,
-            int capacity
-    ) {
-        this.id = id;
-        this.managerId = managerId;
-        this.name = name;
-        this.city = city;
-        this.roomType = roomType;
-        this.services = services;
-        this.distanceFromCenter = distanceFromCenter;
-        this.pricePerNight = pricePerNight;
-        this.imageFileName = imageFileName;
-        this.capacity = capacity;
     }
 
     public HotelBean(HotelBean other) {

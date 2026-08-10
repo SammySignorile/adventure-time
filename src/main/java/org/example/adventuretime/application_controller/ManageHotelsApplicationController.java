@@ -8,8 +8,10 @@ import org.example.adventuretime.dao.HotelDAO;
 import org.example.adventuretime.exception.AuthorizationException;
 import org.example.adventuretime.exception.PersistenceException;
 import org.example.adventuretime.exception.ValidationException;
+import org.example.adventuretime.mapper.BookingMapper;
 import org.example.adventuretime.mapper.HotelMapper;
 import org.example.adventuretime.model.Booking;
+import org.example.adventuretime.model.BookingStatus;
 import org.example.adventuretime.model.HotelRoom;
 import org.example.adventuretime.session.UserSession;
 
@@ -17,7 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Controller applicativo del caso d'uso "Gestire strutture" del venditore.
+ * Controller applicativo dell'albergatore.
+ * Coordina il catalogo delle strutture e il caso d'uso
+ * "Gestire le prenotazioni ricevute".
  */
 public final class ManageHotelsApplicationController {
 
@@ -106,10 +110,34 @@ public final class ManageHotelsApplicationController {
                             "Prenotazione collegata a una struttura inesistente."
                     ));
 
-            result.add(toBean(booking, hotel));
+            result.add(BookingMapper.toBean(booking, hotel));
         }
 
         return result;
+    }
+
+    public void cancelReceivedBooking(long bookingId)
+            throws AuthorizationException, ValidationException,
+            PersistenceException {
+
+        UserBean hotelier = requireHotelier();
+        if (bookingId <= 0) {
+            throw new ValidationException(
+                    "Identificativo prenotazione non valido.");
+        }
+
+        Booking booking = bookingDAO.findByManagerId(hotelier.getId()).stream()
+                .filter(item -> item.getId() == bookingId)
+                .findFirst()
+                .orElseThrow(() -> new AuthorizationException(
+                        "La prenotazione non appartiene alle tue strutture."));
+
+        if (booking.getStatus() == BookingStatus.CANCELLED) {
+            throw new ValidationException(
+                    "La prenotazione è già stata annullata.");
+        }
+
+        bookingDAO.updateStatus(bookingId, BookingStatus.CANCELLED);
     }
 
     private void validateHotelOwnershipWhenUpdating(
@@ -143,21 +171,4 @@ public final class ManageHotelsApplicationController {
         return userSession.requireUser();
     }
 
-    private static BookingBean toBean(
-            Booking booking,
-            HotelBean hotel
-    ) {
-        return new BookingBean(
-                booking.getId(),
-                booking.getUserId(),
-                hotel,
-                booking.getCheckIn(),
-                booking.getCheckOut(),
-                booking.getPeople(),
-                booking.getTotalPrice(),
-                booking.getExtras(),
-                booking.getPointsUsed(),
-                booking.getStatus()
-        );
-    }
 }

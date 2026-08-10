@@ -1,40 +1,52 @@
 package org.example.adventuretime.ui.cli;
 
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
-/*
- * L'output diretto è il confine della CLI. Le istruzioni del progetto
- * ammettono esplicitamente le segnalazioni Sonar relative a System.out.
- */
-@SuppressWarnings("java:S106")
 public final class CliIO {
 
     private final Scanner scanner;
+    private final PrintWriter output;
+    private final PrintWriter errors;
 
     public CliIO(Scanner scanner) {
+        this(
+                scanner,
+                writerFor(FileDescriptor.out),
+                writerFor(FileDescriptor.err)
+        );
+    }
+
+    CliIO(Scanner scanner, PrintWriter output, PrintWriter errors) {
         this.scanner = scanner;
+        this.output = output;
+        this.errors = errors;
     }
 
     public void title(String text) {
-        System.out.println();
-        System.out.println("==================================================");
-        System.out.println(text);
-        System.out.println("==================================================");
+        output.println();
+        output.println("==================================================");
+        output.println(text);
+        output.println("==================================================");
     }
 
     public void info(String text) {
-        System.out.println(text);
+        output.println(text);
     }
 
     public void error(String text) {
-        System.err.println("ERRORE: " + text);
+        errors.println("ERRORE: " + text);
     }
 
     public String readText(String prompt) {
-        System.out.print(prompt);
+        output.print(prompt);
+        output.flush();
         return scanner.nextLine().trim();
     }
 
@@ -93,5 +105,13 @@ public final class CliIO {
             }
             error("Rispondere con s oppure n.");
         }
+    }
+
+    private static PrintWriter writerFor(FileDescriptor descriptor) {
+        return new PrintWriter(
+                new FileOutputStream(descriptor),
+                true,
+                StandardCharsets.UTF_8
+        );
     }
 }

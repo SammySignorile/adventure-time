@@ -5,7 +5,6 @@ import org.example.adventuretime.exception.PersistenceException;
 import org.example.adventuretime.model.HotelRoom;
 import org.example.adventuretime.model.HotelSearchCriteria;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,8 +30,8 @@ public final class JdbcHotelDAO implements HotelDAO {
                 WHERE id = ?
                 """;
 
-        try (Connection connection = connectionManager.openConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connectionManager.getConnection()
+                .prepareStatement(sql)) {
             statement.setLong(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 return resultSet.next()
@@ -59,8 +58,8 @@ public final class JdbcHotelDAO implements HotelDAO {
                 """;
 
         List<HotelRoom> result = new ArrayList<>();
-        try (Connection connection = connectionManager.openConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connectionManager.getConnection()
+                .prepareStatement(sql)) {
             statement.setString(1, "%" + criteria.city().trim() + "%");
             statement.setBigDecimal(2, criteria.maximumPricePerNight());
             statement.setInt(3, criteria.people());
@@ -89,8 +88,8 @@ public final class JdbcHotelDAO implements HotelDAO {
                 """;
 
         List<HotelRoom> result = new ArrayList<>();
-        try (Connection connection = connectionManager.openConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connectionManager.getConnection()
+                .prepareStatement(sql)) {
             statement.setLong(1, managerId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -117,8 +116,8 @@ public final class JdbcHotelDAO implements HotelDAO {
 
         List<String> imageNames = new ArrayList<>();
 
-        try (Connection connection = connectionManager.openConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connectionManager.getConnection()
+                .prepareStatement(sql)) {
 
             statement.setLong(1, hotelId);
 
@@ -150,8 +149,8 @@ public final class JdbcHotelDAO implements HotelDAO {
     @Override
     public void delete(long id, long managerId) throws PersistenceException {
         String sql = "DELETE FROM hotelrooms WHERE id = ? AND gestore_id = ?";
-        try (Connection connection = connectionManager.openConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connectionManager.getConnection()
+                .prepareStatement(sql)) {
             statement.setLong(1, id);
             statement.setLong(2, managerId);
             int rows = statement.executeUpdate();
@@ -174,8 +173,8 @@ public final class JdbcHotelDAO implements HotelDAO {
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
-        try (Connection connection = connectionManager.openConnection();
-             PreparedStatement statement = connection.prepareStatement(
+        try (PreparedStatement statement = connectionManager.getConnection()
+                .prepareStatement(
                      sql, Statement.RETURN_GENERATED_KEYS)) {
             bindHotel(statement, hotel);
             statement.executeUpdate();
@@ -203,8 +202,8 @@ public final class JdbcHotelDAO implements HotelDAO {
                 WHERE id = ? AND gestore_id = ?
                 """;
 
-        try (Connection connection = connectionManager.openConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connectionManager.getConnection()
+                .prepareStatement(sql)) {
             bindHotel(statement, hotel);
             statement.setLong(10, hotel.getId());
             statement.setLong(11, hotel.getManagerId());
@@ -236,17 +235,17 @@ public final class JdbcHotelDAO implements HotelDAO {
     }
 
     private static HotelRoom mapHotel(ResultSet resultSet) throws SQLException {
-        return new HotelRoom(
-                resultSet.getLong("id"),
-                resultSet.getLong("gestore_id"),
-                resultSet.getString("nome"),
-                resultSet.getString("citta"),
-                resultSet.getString("tipo_camera"),
-                resultSet.getString("servizi"),
-                resultSet.getString("distanza_centro"),
-                resultSet.getBigDecimal("prezzo_notte"),
-                resultSet.getString("nome_immagine"),
-                resultSet.getInt("capienza")
-        );
+        HotelRoom room = new HotelRoom();
+        room.setId(resultSet.getLong("id"));
+        room.setManagerId(resultSet.getLong("gestore_id"));
+        room.setName(resultSet.getString("nome"));
+        room.setCity(resultSet.getString("citta"));
+        room.setRoomType(resultSet.getString("tipo_camera"));
+        room.setServices(resultSet.getString("servizi"));
+        room.setDistanceFromCenter(resultSet.getString("distanza_centro"));
+        room.setPricePerNight(resultSet.getBigDecimal("prezzo_notte"));
+        room.setImageFileName(resultSet.getString("nome_immagine"));
+        room.setCapacity(resultSet.getInt("capienza"));
+        return room;
     }
 }

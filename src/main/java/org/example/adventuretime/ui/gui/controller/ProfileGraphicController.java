@@ -11,6 +11,7 @@ import org.example.adventuretime.bean.BookingBean;
 import org.example.adventuretime.bean.UserBean;
 import org.example.adventuretime.exception.AdventureTimeException;
 import org.example.adventuretime.navigation.SceneId;
+import org.example.adventuretime.model.Role;
 
 
 import java.util.List;
@@ -109,7 +110,7 @@ public final class ProfileGraphicController {
 
             List<BookingBean> bookings;
 
-            if (context.getUserSession().isVendor()) {
+            if (user.getRole() == Role.GESTORE) {
                 /*
                  * L'albergatore visualizza le prenotazioni
                  * ricevute per le proprie strutture.
@@ -146,7 +147,8 @@ public final class ProfileGraphicController {
 
             SceneId target;
 
-            if (context.getUserSession().isVendor()) {
+            if (context.loginController().getCurrentUser().getRole()
+                    == Role.GESTORE) {
                 target = SceneId.VENDOR_HOME;
             } else {
                 target = SceneId.TRAVELER_HOME;
@@ -159,4 +161,3 @@ public final class ProfileGraphicController {
         }
     }
 }
-

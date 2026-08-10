@@ -19,7 +19,6 @@
         <javafx.version>21.0.6</javafx.version>
         <junit.version>5.11.4</junit.version>
         <jacoco.version>0.8.15</jacoco.version>
-        <sonar.maven.version>5.7.0.6970</sonar.maven.version>
     </properties>
 
     <dependencies>
@@ -94,12 +93,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>${sonar.maven.version}</version>
             </plugin>
 
             <plugin>
