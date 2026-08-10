@@ -56,26 +56,7 @@ Contiene impostazioni personali della tua sessione di lavoro:
 
 ---
 
-## 1.2 Cartella `database`
-
-Contiene la guida relativa alle immagini memorizzate nel database. Lo script
-`adventuretime.sql` viene consegnato separatamente e importato tramite MySQL
-Workbench; non è incluso nel repository Java.
-
-### `COME_USARE_LE_FOTO.md`
-
-Spiega dove si trovano le immagini e come il nome salvato nel database viene
-caricato dal classpath.
-
-### Come dirlo all'esame
-
-> Lo schema MySQL viene consegnato separatamente dal codice Java e importato
-> con MySQL Workbench. I controller non eseguono SQL direttamente: usano le
-> interfacce DAO.
-
----
-
-## 1.3 Cartella `docs`
+## 1.2 Cartella `docs`
 
 Contiene la documentazione, non il codice eseguito dall'applicazione.
 
@@ -90,6 +71,11 @@ Riassume le idee studiate negli altri progetti e specifica quali scelte sono sta
 ### `CHECKLIST_ESAME.md`
 
 È una lista di controlli da fare prima della consegna e dell'esame.
+
+### `COME_USARE_LE_FOTO.md`
+
+Spiega dove si trovano le immagini e come il nome salvato nel database viene
+caricato dal classpath.
 
 ### `GUIDA_ARCHITETTURA_E_CODICE.md`
 
@@ -120,7 +106,7 @@ Contiene file PlantUML (`.puml`). Sono file testuali da cui si possono generare 
 
 ---
 
-## 1.4 `pom.xml`
+## 1.3 `pom.xml`
 
 È il file principale di Maven.
 
@@ -145,7 +131,7 @@ Le dipendenze più importanti sono:
 
 ---
 
-## 1.5 Cartella `src`
+## 1.4 Cartella `src`
 
 È la cartella più importante perché contiene codice, viste e test.
 
