@@ -1,77 +1,42 @@
 # Come funzionano le foto degli hotel
 
-## 1. Crea la cartella sul Desktop
+## 1. Dove si trovano le immagini
 
-Il progetto usa come impostazione predefinita:
-
-```text
-C:\Users\TUO_NOME\Desktop\AdventureTimeImages
-```
-
-Sul computer mostrato nello screenshot sarà normalmente:
+Le immagini distribuite con il progetto si trovano in:
 
 ```text
-C:\Users\sammy\Desktop\AdventureTimeImages
+src/main/resources/images
 ```
 
-## 2. Copia le immagini nella cartella
+`HotelImageLoader` le carica dal classpath, quindi non serve creare una
+cartella specifica sul Desktop.
 
-Esempio:
+## 2. Nel database salva solo il nome
+
+Nelle colonne `hotelrooms.nome_immagine` e
+`hotel_images.nome_immagine` viene salvato, per esempio:
 
 ```text
-AdventureTimeImages
-├── roma 1.jpg
-├── roma 2.jpg
-├── roma 3.jpg
-├── roma 4.jpg
-├── milano 1.jpg
-├── napoli 1.jpg
-├── napoli 2.jpg
-├── napoli 3.jpg
-├── napoli 4.jpg
-└── firenze 1.jpg
-```
-
-## 3. Nel database salva solo il nome
-
-Nella tabella `hotelrooms` la colonna è:
-
-```sql
-nome_immagine VARCHAR(255)
-```
-
-Un record contiene, per esempio:
-
-```sql
-'roma 1.jpg'
+roma 1.jpg
 ```
 
 Non contiene tutto il percorso `C:\Users\...`.
 
-## 4. Il programma costruisce il percorso
+## 3. Come viene caricata una foto
 
-`HotelImageLoader` unisce:
-
-```text
-cartella configurata + nome presente nel database
-```
-
-quindi:
+Il programma cerca il nome ricevuto dal database sotto `/images/` nel
+classpath. Nell'esecuzione da IntelliJ o Maven la cartella delle risorse viene
+inclusa automaticamente.
 
 ```text
-C:\Users\sammy\Desktop\AdventureTimeImages
-+
-roma 1.jpg
-=
-C:\Users\sammy\Desktop\AdventureTimeImages\roma 1.jpg
+/images/ + roma 1.jpg
 ```
 
-## 5. Cambiare cartella
+Se il file non è presente, l'interfaccia mostra il segnaposto previsto senza
+interrompere l'applicazione.
 
-Nel file `application.properties` modifica:
+## 4. Immagine principale e galleria
 
-```properties
-hotel.images.path=${user.home}/Desktop/AdventureTimeImages
-```
-
-`${user.home}` viene sostituito automaticamente con la cartella dell'utente Windows.
+`hotelrooms.nome_immagine` contiene l'immagine principale. La tabella
+`hotel_images` può contenere ulteriori immagini dello stesso hotel e viene
+letta dal `JdbcHotelDAO`.

@@ -12,7 +12,6 @@ public record AppConfig(
         AppMode appMode,
         PersistenceMode persistenceMode,
         Path fileSystemPath,
-        Path hotelImagesPath,
         DatabaseConfig database,
         WindowConfig window
 ) {

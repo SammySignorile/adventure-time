@@ -79,7 +79,9 @@ classpath e, se non esiste, la GUI mostra “Foto non disponibile”.
 2. Modificare utente e password in `application-full-db.properties`.
 3. Avviare selezionando quella configurazione.
 
-Lo script principale è stato mantenuto volutamente semplice: tre tabelle, chiavi primarie, chiavi esterne e dati di prova. I controlli applicativi più specifici restano nella logica Java.
+Lo script principale è stato mantenuto volutamente semplice: quattro tabelle,
+chiavi primarie, chiavi esterne e dati di prova. I controlli applicativi più
+specifici restano nella logica Java.
 
 ## Test
 

@@ -4,10 +4,12 @@
 -- Questo script è volutamente semplice e coerente con i DAO Java.
 -- Nel campo nome_immagine viene salvato SOLO il nome del file,
 -- per esempio: roma 1.jpg
--- Il percorso della cartella si trova in application.properties.
+-- Le immagini si trovano in src/main/resources/images.
 
 DROP DATABASE IF EXISTS adventuretimedb;
-CREATE DATABASE adventuretimedb;
+CREATE DATABASE adventuretimedb
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
 USE adventuretimedb;
 
 -- ------------------------------------------------------------
@@ -28,7 +30,7 @@ CREATE TABLE users (
 -- ------------------------------------------------------------
 -- HOTEL/CAMERE
 -- gestore_id collega la struttura al suo venditore.
--- nome_immagine contiene solo il nome del file presente sul PC.
+-- nome_immagine contiene solo il nome della risorsa nel classpath.
 -- ------------------------------------------------------------
 CREATE TABLE hotelrooms (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -104,31 +106,57 @@ INSERT INTO hotelrooms(
 
 (6, 'Hotel Trastevere Cozy', 'Roma', 'Camera Matrimoniale',
  'WiFi • Colazione • Terrazza', '800m dal centro',
- 130.00, 'roma 4.jpg', 2),
+ 130.00, 'roma centro.jpg', 2),
 
 (6, 'Hotel Milano Luxury', 'Milano', 'Suite Deluxe',
  'Spa • Piscina • Ristorante', '200m dal centro',
- 250.00, 'milano 1.jpg', 4),
+ 250.00, 'stanza 2.jpg', 4),
 
 (6, 'Hotel Napoli Mare', 'Napoli', 'Camera Matrimoniale',
  'Vista mare • WiFi • Colazione', '1km dal centro',
- 90.00, 'napoli 1.jpg', 2),
+ 90.00, 'colazione 2.jpg', 2),
 
 (7, 'Hotel Napoli Centro', 'Napoli', 'Camera Singola',
  'WiFi • Colazione inclusa', '400m dal centro',
- 85.00, 'napoli 2.jpg', 1),
+ 85.00, 'colazione 3.jpg', 1),
 
 (7, 'Hotel Vesuvio Luxury', 'Napoli', 'Suite',
  'Vista Vesuvio • Piscina • Spa', '600m dal centro',
- 220.00, 'napoli 3.jpg', 4),
+ 220.00, 'stanza 2.jpg', 4),
 
 (8, 'Hotel Spaccanapoli', 'Napoli', 'Camera Doppia',
  'WiFi • Parcheggio • Colazione', '200m dal centro',
- 95.00, 'napoli 4.jpg', 2),
+ 95.00, 'colazione 2.jpg', 2),
 
 (8, 'Hotel Firenze Relax', 'Firenze', 'Camera Doppia',
  'WiFi • Giardino • Parcheggio', '300m dal centro',
- 140.00, 'firenze 1.jpg', 2);
+ 140.00, 'colazione 3.jpg', 2);
+
+-- ------------------------------------------------------------
+-- IMMAGINI DEGLI HOTEL
+-- Il DAO JDBC usa questa tabella per mostrare più immagini.
+-- Anche qui viene salvato soltanto il nome del file nel classpath.
+-- ------------------------------------------------------------
+CREATE TABLE hotel_images (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    hotel_id BIGINT NOT NULL,
+    nome_immagine VARCHAR(255) NOT NULL,
+
+    FOREIGN KEY (hotel_id) REFERENCES hotelrooms(id)
+        ON DELETE CASCADE
+);
+
+INSERT INTO hotel_images(hotel_id, nome_immagine) VALUES
+(1, 'roma 1.jpg'),
+(1, 'roma centro.jpg'),
+(1, 'colazione 1.jpg'),
+(2, 'roma 2.jpg'),
+(2, 'hotel roma.jpg'),
+(2, 'termini.jpg'),
+(2, 'stanza 2.jpg'),
+(3, 'roma 3.jpg'),
+(3, 'colosseo 3.jpg'),
+(3, 'stanza roma 1.jpg');
 
 INSERT INTO bookings(
     user_id,
