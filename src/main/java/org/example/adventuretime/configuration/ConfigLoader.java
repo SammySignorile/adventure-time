@@ -15,6 +15,7 @@ import java.util.Properties;
 public final class ConfigLoader {
 
     private static final String DEFAULT_RESOURCE = "/application.properties";
+    private static final String CONFIG_PROPERTY = "adventure.config";
     private static final String USER_HOME_TOKEN = "${user.home}";
 
     private ConfigLoader() {
@@ -22,24 +23,26 @@ public final class ConfigLoader {
     }
 
     public static AppConfig load() throws ConfigurationException {
-        final String CONFIG_RESOURCE =
-                "/application.properties";
+        String configResource = normalizeResourceName(
+                System.getProperty(CONFIG_PROPERTY, DEFAULT_RESOURCE));
 
         Properties properties = new Properties();
 
         try (InputStream stream = ConfigLoader.class
-                .getResourceAsStream(CONFIG_RESOURCE)) {
+                .getResourceAsStream(configResource)) {
 
             if (stream == null) {
                 throw new ConfigurationException(
-                        "File application.properties non trovato.");
+                        "File di configurazione non trovato: "
+                                + configResource);
             }
 
             properties.load(stream);
 
         } catch (IOException e) {
             throw new ConfigurationException(
-                    "Impossibile leggere application.properties.",
+                    "Impossibile leggere il file di configurazione: "
+                            + configResource,
                     e
             );
         }
@@ -59,6 +62,16 @@ public final class ConfigLoader {
 
         validateModes(config);
         return config;
+    }
+
+    private static String normalizeResourceName(String resourceName)
+            throws ConfigurationException {
+        if (resourceName == null || resourceName.isBlank()) {
+            throw new ConfigurationException(
+                    "La proprietà " + CONFIG_PROPERTY + " non può essere vuota.");
+        }
+        String trimmed = resourceName.trim();
+        return trimmed.startsWith("/") ? trimmed : "/" + trimmed;
     }
 
     private static void validateModes(AppConfig config)

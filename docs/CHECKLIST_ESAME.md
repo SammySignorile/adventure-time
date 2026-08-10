@@ -16,7 +16,8 @@
 - [x] Decorator per i servizi extra;
 - [x] Session Context per ruoli;
 - [x] eccezioni personalizzate gestite nei boundary;
-- [x] test per i flussi principali;
+- [x] nove test per configurazione e flussi principali;
+- [x] circa 5.500 righe Java, senza codice aggiunto al solo scopo di aumentare il conteggio;
 - [x] script MySQL coerente;
 - [x] diagrammi PlantUML modificabili.
 
@@ -29,12 +30,15 @@
 - [ ] produrre 1 VOPC e 1 design-level diagram per membro;
 - [ ] assegnare un pattern diverso a ciascun membro nella relazione;
 - [ ] produrre activity, sequence e state diagram richiesti per membro;
-- [ ] arrivare alla quantità di LOC concordata col docente senza codice artificiale;
-- [ ] configurare repository Git e branch strategy;
+- [x] configurare repository Git e branch strategy;
 - [ ] collegare SonarCloud e risolvere ogni issue;
 - [ ] registrare video di 1–2 minuti;
 - [ ] creare la relazione PDF finale seguendo l'indice ufficiale;
 - [ ] verificare che codice, diagrammi e relazione descrivano la stessa versione.
+
+I punti ancora aperti richiedono dati personali del gruppo, account esterni o
+materiale multimediale: non possono essere completati correttamente inventando
+nomi, matricole, risultati SonarCloud, storyboard o video.
 
 ## Pattern suggeriti da assegnare
 

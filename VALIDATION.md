@@ -1,6 +1,6 @@
 # Validazione della versione semplificata
 
-Data: 2026-08-04
+Data: 2026-08-10
 
 ## Controlli eseguiti con successo
 
@@ -23,10 +23,13 @@ Data: 2026-08-04
 6. Espansione della proprietà `${user.home}` nella cartella immagini.
 7. Controllo di coerenza tra colonna SQL `nome_immagine` e `JdbcHotelDAO`.
 8. Controllo di assenza dei vecchi nomi `imageUrl` e `immagine_url` nel codice attivo.
+9. Build Maven completa con JDK 21.
+10. Esecuzione di 9 test JUnit senza errori o fallimenti.
+11. Verifica dei profili DEMO/IN_MEMORY, CLI/DEMO e FULL/FILESYSTEM.
 
 ## Controlli da fare sul computer dello studente
 
-L'ambiente usato per preparare i file non dispone di Maven/OpenJFX e di un server MySQL attivo. Sul computer locale bisogna quindi eseguire:
+Prima della consegna bisogna ripetere:
 
 ```bash
 mvn clean test

@@ -4,21 +4,20 @@ actor Viaggiatore
 boundary SearchHotelView
 boundary HotelListView
 boundary CheckoutView
-control SearchHotelApplicationController
-control BookingApplicationController
+control ManageBookingsApplicationController
 control BookingFacade
 entity HotelRoom
 entity Booking
 entity User
 
 Viaggiatore --> SearchHotelView
-SearchHotelView --> SearchHotelApplicationController : SearchCriteriaBean
-SearchHotelApplicationController --> HotelRoom : pull via HotelDAO
-SearchHotelApplicationController --> Booking : availability via BookingDAO
-SearchHotelApplicationController --> HotelListView : List<HotelBean>
+SearchHotelView --> ManageBookingsApplicationController : SearchCriteriaBean
+ManageBookingsApplicationController --> HotelRoom : pull via HotelDAO
+ManageBookingsApplicationController --> Booking : availability via BookingDAO
+ManageBookingsApplicationController --> HotelListView : List<HotelBean>
 HotelListView --> CheckoutView : selected HotelBean
-CheckoutView --> BookingApplicationController : BookingRequestBean
-BookingApplicationController --> BookingFacade
+CheckoutView --> ManageBookingsApplicationController : BookingRequestBean
+ManageBookingsApplicationController --> BookingFacade
 BookingFacade --> HotelRoom
 BookingFacade --> Booking
 BookingFacade --> User
