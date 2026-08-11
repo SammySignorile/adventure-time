@@ -78,6 +78,21 @@ public class StateHotelDAO implements HotelDAO {
                     "stanza roma 1.jpg",
                     "colazione 3.jpg"
             );
+            case 4 -> List.of(
+                    "roma centro.jpg",
+                    "stanza roma 1.jpg",
+                    "colazione 1.jpg"
+            );
+            case 5 -> List.of(
+                    "stanza 2.jpg",
+                    "hotel roma.jpg",
+                    "colazione 3.jpg"
+            );
+            case 6 -> List.of(
+                    "colazione 2.jpg",
+                    "stanza 2.jpg",
+                    "colazione 3.jpg"
+            );
             default -> HotelDAO.super.findImageNamesByHotelId(hotelId);
         };
     }
