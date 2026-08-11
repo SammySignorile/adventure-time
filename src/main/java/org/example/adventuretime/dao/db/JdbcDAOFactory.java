@@ -5,6 +5,7 @@ import org.example.adventuretime.dao.BookingDAO;
 import org.example.adventuretime.dao.DAOFactory;
 import org.example.adventuretime.dao.HotelDAO;
 import org.example.adventuretime.dao.UserDAO;
+import org.example.adventuretime.exception.PersistenceException;
 
 /**
  * Concrete Abstract Factory used by FULL + DB mode.
@@ -16,8 +17,9 @@ public final class JdbcDAOFactory implements DAOFactory {
     private final BookingDAO bookingDAO;
     private final DBConnectionManager connectionManager;
 
-    public JdbcDAOFactory(AppConfig config) {
+    public JdbcDAOFactory(AppConfig config) throws PersistenceException {
         connectionManager = new DBConnectionManager(config);
+        connectionManager.getConnection();
         userDAO = new JdbcUserDAO(connectionManager);
         hotelDAO = new JdbcHotelDAO(connectionManager);
         bookingDAO = new JdbcBookingDAO(connectionManager);

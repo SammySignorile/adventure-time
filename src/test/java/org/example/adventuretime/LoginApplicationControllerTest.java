@@ -27,12 +27,14 @@ class LoginApplicationControllerTest {
     }
 
     @Test
-    void loginTravelerCreatesSession() throws Exception {
+    void loginTravelerCreatesAndClearsSession() throws Exception {
         var user = controller.login(
                 new CredentialsBean("mario@test.com", "1234"));
 
         assertEquals(Role.CLIENTE, user.getRole());
         assertTrue(session.isTraveler());
+        controller.logout();
+        assertFalse(session.isAuthenticated());
     }
 
     @Test
@@ -45,10 +47,4 @@ class LoginApplicationControllerTest {
         assertFalse(session.isAuthenticated());
     }
 
-    @Test
-    void logoutClearsSession() throws Exception {
-        controller.login(new CredentialsBean("mario@test.com", "1234"));
-        controller.logout();
-        assertFalse(session.isAuthenticated());
-    }
 }

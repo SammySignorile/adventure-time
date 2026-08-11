@@ -15,7 +15,6 @@ import java.util.Properties;
 public final class ConfigLoader {
 
     private static final String DEFAULT_RESOURCE = "/application.properties";
-    private static final String CONFIG_PROPERTY = "adventure.config";
     private static final String USER_HOME_TOKEN = "${user.home}";
 
     private ConfigLoader() {
@@ -23,18 +22,15 @@ public final class ConfigLoader {
     }
 
     public static AppConfig load() throws ConfigurationException {
-        String configResource = normalizeResourceName(
-                System.getProperty(CONFIG_PROPERTY, DEFAULT_RESOURCE));
-
         Properties properties = new Properties();
 
         try (InputStream stream = ConfigLoader.class
-                .getResourceAsStream(configResource)) {
+                .getResourceAsStream(DEFAULT_RESOURCE)) {
 
             if (stream == null) {
                 throw new ConfigurationException(
                         "File di configurazione non trovato: "
-                                + configResource);
+                                + DEFAULT_RESOURCE);
             }
 
             properties.load(stream);
@@ -42,15 +38,21 @@ public final class ConfigLoader {
         } catch (IOException e) {
             throw new ConfigurationException(
                     "Impossibile leggere il file di configurazione: "
-                            + configResource,
+                            + DEFAULT_RESOURCE,
                     e
             );
         }
 
-        AppConfig config = new AppConfig(
+        PersistenceMode persistenceMode = readEnum(
+                properties,
+                "persistence.mode",
+                PersistenceMode.class
+        );
+
+        return new AppConfig(
                 readEnum(properties, "ui.mode", UiMode.class),
-                readEnum(properties, "app.mode", AppMode.class),
-                readEnum(properties, "persistence.mode", PersistenceMode.class),
+                appModeFor(persistenceMode),
+                persistenceMode,
                 readPath(properties, "filesystem.path"),
                 new DatabaseConfig(
                         require(properties, "db.url"),
@@ -62,33 +64,12 @@ public final class ConfigLoader {
                         readPositiveDouble(properties, "gui.height")
                 )
         );
-
-        validateModes(config);
-        return config;
     }
 
-    private static String normalizeResourceName(String resourceName)
-            throws ConfigurationException {
-        if (resourceName == null || resourceName.isBlank()) {
-            throw new ConfigurationException(
-                    "La proprietà " + CONFIG_PROPERTY + " non può essere vuota.");
-        }
-        String trimmed = resourceName.trim();
-        return trimmed.startsWith("/") ? trimmed : "/" + trimmed;
-    }
-
-    private static void validateModes(AppConfig config)
-            throws ConfigurationException {
-        boolean demoIsCorrect = config.appMode() == AppMode.DEMO
-                && config.persistenceMode() == PersistenceMode.IN_MEMORY;
-        boolean fullIsCorrect = config.appMode() == AppMode.FULL
-                && config.persistenceMode() != PersistenceMode.IN_MEMORY;
-
-        if (!demoIsCorrect && !fullIsCorrect) {
-            throw new ConfigurationException(
-                    "Configurazione incoerente: DEMO richiede IN_MEMORY; "
-                            + "FULL richiede DB oppure FILESYSTEM.");
-        }
+    private static AppMode appModeFor(PersistenceMode persistenceMode) {
+        return persistenceMode == PersistenceMode.IN_MEMORY
+                ? AppMode.DEMO
+                : AppMode.FULL;
     }
 
     /**

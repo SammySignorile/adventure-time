@@ -11,11 +11,11 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
 /**
- * Small student-level filesystem database.
+ * Archivio locale basato sulla serializzazione Java.
  *
- * The complete state is serialized to one file. A temporary file is written
- * first and then atomically moved when possible, reducing the risk of leaving
- * a half-written database after a crash.
+ * Lo stato completo viene scritto su un file binario tramite
+ * ObjectOutputStream e riletto tramite ObjectInputStream. Gli stream sono
+ * chiusi automaticamente dai blocchi try-with-resources.
  */
 public final class FileSystemDataStore implements DataStore {
 
