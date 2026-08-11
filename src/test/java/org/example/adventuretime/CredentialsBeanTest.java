@@ -18,68 +18,38 @@ class CredentialsBeanTest {
     }
 
     @Test
-    void rejectsEmailWithoutDomainDot() {
-        var credentials = new CredentialsBean("mario@test", "1234");
-
-        assertThrows(ValidationException.class, credentials::validateSyntax);
-    }
-
-    @Test
-    void rejectsEmailWithMoreThanOneAtSign() {
-        var credentials = new CredentialsBean(
+    void rejectsMalformedEmails() {
+        String[] invalidEmails = {
+                "mario@test",
                 "mario@test@example.com",
-                "1234"
-        );
+                "  ",
+                null,
+                "mario @test.com",
+                "mario@.com",
+                "mario@test."
+        };
 
-        assertThrows(ValidationException.class, credentials::validateSyntax);
+        for (String email : invalidEmails) {
+            CredentialsBean credentials = new CredentialsBean(email, "1234");
+            assertThrows(
+                    ValidationException.class,
+                    credentials::validateSyntax,
+                    () -> "Email non rifiutata: " + email
+            );
+        }
     }
 
     @Test
-    void rejectsBlankEmail() {
-        var credentials = new CredentialsBean("  ", "1234");
+    void rejectsMissingPasswords() {
+        String[] invalidPasswords = {"  ", null};
 
-        assertThrows(ValidationException.class, credentials::validateSyntax);
-    }
-
-    @Test
-    void rejectsNullEmail() {
-        var credentials = new CredentialsBean(null, "1234");
-
-        assertThrows(ValidationException.class, credentials::validateSyntax);
-    }
-
-    @Test
-    void rejectsEmailContainingWhitespace() {
-        var credentials = new CredentialsBean("mario @test.com", "1234");
-
-        assertThrows(ValidationException.class, credentials::validateSyntax);
-    }
-
-    @Test
-    void rejectsEmailWithoutDomainName() {
-        var credentials = new CredentialsBean("mario@.com", "1234");
-
-        assertThrows(ValidationException.class, credentials::validateSyntax);
-    }
-
-    @Test
-    void rejectsEmailWithTrailingDot() {
-        var credentials = new CredentialsBean("mario@test.", "1234");
-
-        assertThrows(ValidationException.class, credentials::validateSyntax);
-    }
-
-    @Test
-    void rejectsBlankPassword() {
-        var credentials = new CredentialsBean("mario@test.com", "  ");
-
-        assertThrows(ValidationException.class, credentials::validateSyntax);
-    }
-
-    @Test
-    void rejectsNullPassword() {
-        var credentials = new CredentialsBean("mario@test.com", null);
-
-        assertThrows(ValidationException.class, credentials::validateSyntax);
+        for (String password : invalidPasswords) {
+            CredentialsBean credentials = new CredentialsBean(
+                    "mario@test.com", password);
+            assertThrows(
+                    ValidationException.class,
+                    credentials::validateSyntax
+            );
+        }
     }
 }

@@ -10,8 +10,13 @@ import org.example.adventuretime.navigation.SceneId;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public final class HotelListGraphicController {
+
+    private static final Logger LOGGER = Logger.getLogger(
+            HotelListGraphicController.class.getName());
 
     @FXML
     private VBox cardsContainer;
@@ -44,8 +49,10 @@ public final class HotelListGraphicController {
                 controller.setHotel(hotel);
                 cardsContainer.getChildren().add(card);
             } catch (IOException e) {
-                AlertHelper.error("Impossibile creare una card hotel: "
-                        + e.getMessage());
+                LOGGER.log(Level.WARNING,
+                        "Impossibile caricare la scheda dell'hotel", e);
+                AlertHelper.error(
+                        "Impossibile mostrare le strutture. Riprovare.");
                 return;
             }
         }

@@ -12,6 +12,10 @@ import java.util.Optional;
 
 public class StateHotelDAO implements HotelDAO {
 
+    private static final String ROOM_IMAGE = "stanza 2.jpg";
+    private static final String ROME_ROOM_IMAGE = "stanza roma 1.jpg";
+    private static final String BREAKFAST_IMAGE = "colazione 3.jpg";
+
     private final DataStore store;
 
     public StateHotelDAO(DataStore store) {
@@ -63,20 +67,35 @@ public class StateHotelDAO implements HotelDAO {
                     "roma centro.jpg",
                     "roma 3.jpg",
                     "colazione 1.jpg",
-                    "stanza roma 1.jpg"
+                    ROME_ROOM_IMAGE
             );
             case 2 -> List.of(
                     "termini.jpg",
                     "hotel roma.jpg",
                     "roma 2.jpg",
-                    "stanza 2.jpg",
+                    ROOM_IMAGE,
                     "colazione 2.jpg"
             );
             case 3 -> List.of(
                     "colosseo 3.jpg",
                     "roma 3.jpg",
-                    "stanza roma 1.jpg",
-                    "colazione 3.jpg"
+                    ROME_ROOM_IMAGE,
+                    BREAKFAST_IMAGE
+            );
+            case 4 -> List.of(
+                    "roma centro.jpg",
+                    ROME_ROOM_IMAGE,
+                    "colazione 1.jpg"
+            );
+            case 5 -> List.of(
+                    ROOM_IMAGE,
+                    "hotel roma.jpg",
+                    BREAKFAST_IMAGE
+            );
+            case 6 -> List.of(
+                    "colazione 2.jpg",
+                    ROOM_IMAGE,
+                    BREAKFAST_IMAGE
             );
             default -> HotelDAO.super.findImageNamesByHotelId(hotelId);
         };

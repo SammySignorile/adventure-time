@@ -29,12 +29,35 @@ public final class DBConnectionManager implements AutoCloseable {
             throws PersistenceException {
         try {
             if (connection == null || connection.isClosed()) {
-                connection = DriverManager.getConnection(url, user, password);
+                connection = openAndInitializeConnection();
             }
             return connection;
         } catch (SQLException e) {
             throw new PersistenceException(
                     "Impossibile connettersi al database Adventure Time.", e);
+        }
+    }
+
+    private Connection openAndInitializeConnection()
+            throws SQLException, PersistenceException {
+        Connection opened = DriverManager.getConnection(url, user, password);
+        try {
+            DatabaseInitializer.initialize(opened);
+            return opened;
+        } catch (PersistenceException e) {
+            closeAfterInitializationFailure(opened, e);
+            throw e;
+        }
+    }
+
+    private static void closeAfterInitializationFailure(
+            Connection opened,
+            PersistenceException failure
+    ) {
+        try {
+            opened.close();
+        } catch (SQLException closeFailure) {
+            failure.addSuppressed(closeFailure);
         }
     }
 
