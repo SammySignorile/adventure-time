@@ -5,6 +5,7 @@ import org.example.adventuretime.bean.BookingQuoteBean;
 import org.example.adventuretime.bean.BookingRequestBean;
 import org.example.adventuretime.bean.HotelBean;
 import org.example.adventuretime.bean.SearchCriteriaBean;
+import org.example.adventuretime.bean.PaymentDetailsBean;
 import org.example.adventuretime.exception.AdventureTimeException;
 import org.example.adventuretime.model.ExtraService;
 
@@ -63,15 +64,23 @@ public final class BookingCLIGraphicController {
             io.info("Sconto punti: -€" + quote.getPointsDiscount());
             io.info("TOTALE: €" + quote.getTotalPrice());
 
-            if (!io.readYesNo("Confermare la prenotazione?")) {
+            if (!io.readYesNo("Inviare la richiesta di prenotazione?")) {
                 io.info("Prenotazione annullata.");
                 return;
             }
 
+            request.setPaymentDetails(new PaymentDetailsBean(
+                    io.readText("Numero carta: "),
+                    io.readText("Scadenza MM/AA: "),
+                    io.readText("CVV: "),
+                    io.readText("Nome intestatario: ")
+            ));
+
             var booking = AppContext.getInstance()
                     .manageBookingsController()
-                    .book(request);
-            io.info("Prenotazione confermata. Codice: " + booking.getId());
+                    .requestBooking(request);
+            io.info("Richiesta inviata. Codice: " + booking.getId());
+            io.info("Il pagamento avverra dopo l'approvazione del venditore.");
         } catch (AdventureTimeException e) {
             io.error(e.getMessage());
         }

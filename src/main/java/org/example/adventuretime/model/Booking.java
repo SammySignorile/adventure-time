@@ -23,10 +23,12 @@ public class Booking implements Serializable {
     private EnumSet<ExtraService> extras;
     private int pointsUsed;
     private BookingStatus status;
+    private PaymentData paymentData;
+    private boolean paymentCompleted;
 
     public Booking() {
         extras = EnumSet.noneOf(ExtraService.class);
-        status = BookingStatus.CONFIRMED;
+        status = BookingStatus.PENDING_APPROVAL;
     }
 
     public Booking(Booking other) {
@@ -42,6 +44,10 @@ public class Booking implements Serializable {
                 : EnumSet.copyOf(other.extras);
         this.pointsUsed = other.pointsUsed;
         this.status = other.status;
+        this.paymentData = other.paymentData == null
+                ? null
+                : new PaymentData(other.paymentData);
+        this.paymentCompleted = other.paymentCompleted;
     }
 
     public long getId() {
@@ -124,6 +130,24 @@ public class Booking implements Serializable {
 
     public void setStatus(BookingStatus status) {
         this.status = status;
+    }
+
+    public PaymentData getPaymentData() {
+        return paymentData == null ? null : new PaymentData(paymentData);
+    }
+
+    public void setPaymentData(PaymentData paymentData) {
+        this.paymentData = paymentData == null
+                ? null
+                : new PaymentData(paymentData);
+    }
+
+    public boolean isPaymentCompleted() {
+        return paymentCompleted;
+    }
+
+    public void setPaymentCompleted(boolean paymentCompleted) {
+        this.paymentCompleted = paymentCompleted;
     }
 
     @Override

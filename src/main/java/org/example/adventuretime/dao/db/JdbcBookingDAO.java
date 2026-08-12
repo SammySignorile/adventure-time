@@ -5,6 +5,7 @@ import org.example.adventuretime.exception.PersistenceException;
 import org.example.adventuretime.model.Booking;
 import org.example.adventuretime.model.BookingStatus;
 import org.example.adventuretime.model.ExtraService;
+import org.example.adventuretime.model.PaymentData;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -31,8 +32,10 @@ public final class JdbcBookingDAO implements BookingDAO {
         String sql = """
                 INSERT INTO bookings(
                     user_id, hotel_id, check_in, check_out, persone,
-                    prezzo_totale, extras, punti_usati, stato
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    prezzo_totale, extras, punti_usati, stato,
+                    payment_token, card_holder, card_last_four,
+                    payment_completed
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
         try (PreparedStatement statement = connectionManager.getConnection()
@@ -47,6 +50,11 @@ public final class JdbcBookingDAO implements BookingDAO {
             statement.setString(7, serializeExtras(booking.getExtras()));
             statement.setInt(8, booking.getPointsUsed());
             statement.setString(9, booking.getStatus().name());
+            PaymentData paymentData = booking.getPaymentData();
+            statement.setString(10, paymentData.getToken());
+            statement.setString(11, paymentData.getCardHolder());
+            statement.setString(12, paymentData.getLastFourDigits());
+            statement.setBoolean(13, booking.isPaymentCompleted());
             statement.executeUpdate();
 
             try (ResultSet keys = statement.getGeneratedKeys()) {
@@ -69,7 +77,9 @@ public final class JdbcBookingDAO implements BookingDAO {
             throws PersistenceException {
         String sql = """
                 SELECT id, user_id, hotel_id, check_in, check_out, persone,
-                       prezzo_totale, extras, punti_usati, stato
+                       prezzo_totale, extras, punti_usati, stato,
+                       payment_token, card_holder, card_last_four,
+                       payment_completed
                 FROM bookings
                 WHERE user_id = ?
                 ORDER BY check_in DESC
@@ -83,7 +93,8 @@ public final class JdbcBookingDAO implements BookingDAO {
         String sql = """
                 SELECT b.id, b.user_id, b.hotel_id, b.check_in, b.check_out,
                        b.persone, b.prezzo_totale, b.extras,
-                       b.punti_usati, b.stato
+                       b.punti_usati, b.stato, b.payment_token,
+                       b.card_holder, b.card_last_four, b.payment_completed
                 FROM bookings b
                 JOIN hotelrooms h ON h.id = b.hotel_id
                 WHERE h.gestore_id = ?
@@ -112,6 +123,26 @@ public final class JdbcBookingDAO implements BookingDAO {
     }
 
     @Override
+    public void approveBooking(long bookingId) throws PersistenceException {
+        String sql = """
+                UPDATE bookings
+                SET stato = 'CONFIRMED', payment_completed = TRUE
+                WHERE id = ? AND stato = 'PENDING_APPROVAL'
+                """;
+        try (PreparedStatement statement = connectionManager.getConnection()
+                .prepareStatement(sql)) {
+            statement.setLong(1, bookingId);
+            if (statement.executeUpdate() == 0) {
+                throw new PersistenceException(
+                        "La richiesta non esiste o non e piu in attesa.");
+            }
+        } catch (SQLException e) {
+            throw new PersistenceException(
+                    "Errore durante l'approvazione della prenotazione.", e);
+        }
+    }
+
+    @Override
     public boolean isHotelAvailable(
             long hotelId,
             LocalDate checkIn,
@@ -121,7 +152,7 @@ public final class JdbcBookingDAO implements BookingDAO {
                 SELECT COUNT(*) AS conflicts
                 FROM bookings
                 WHERE hotel_id = ?
-                  AND stato = 'CONFIRMED'
+                  AND stato IN ('PENDING_APPROVAL', 'CONFIRMED')
                   AND check_in < ?
                   AND check_out > ?
                 """;
@@ -175,6 +206,13 @@ public final class JdbcBookingDAO implements BookingDAO {
         booking.setPointsUsed(resultSet.getInt("punti_usati"));
         booking.setStatus(BookingStatus.valueOf(
                 resultSet.getString("stato")));
+        booking.setPaymentData(new PaymentData(
+                resultSet.getString("payment_token"),
+                resultSet.getString("card_holder"),
+                resultSet.getString("card_last_four")
+        ));
+        booking.setPaymentCompleted(
+                resultSet.getBoolean("payment_completed"));
         return booking;
     }
 

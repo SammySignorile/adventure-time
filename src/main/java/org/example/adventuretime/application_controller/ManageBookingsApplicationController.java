@@ -203,7 +203,7 @@ public final class ManageBookingsApplicationController {
         return bookingFacade.quote(request);
     }
 
-    public BookingBean book(BookingRequestBean request)
+    public BookingBean requestBooking(BookingRequestBean request)
             throws ValidationException, PersistenceException,
             AuthorizationException, HotelUnavailableException {
 
@@ -211,9 +211,16 @@ public final class ManageBookingsApplicationController {
         validateRequestPresenceAndSyntax(request);
         validateBookingSemantics(request);
 
-        BookingBean confirmedBooking = bookingFacade.createBooking(request);
+        BookingBean pendingBooking = bookingFacade.createBookingRequest(request);
         flowContext.clearBookingFlow();
-        return confirmedBooking;
+        return pendingBooking;
+    }
+
+    /** Mantiene compatibilita con il nome usato dai test originali. */
+    public BookingBean book(BookingRequestBean request)
+            throws ValidationException, PersistenceException,
+            AuthorizationException, HotelUnavailableException {
+        return requestBooking(request);
     }
 
     public List<BookingBean> getMyBookings()

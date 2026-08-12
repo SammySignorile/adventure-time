@@ -20,6 +20,7 @@ public class BookingRequestBean {
     private EnumSet<ExtraService> extras =
             EnumSet.noneOf(ExtraService.class);
     private boolean usePoints;
+    private PaymentDetailsBean paymentDetails;
 
     public BookingRequestBean() {
         // Costruttore vuoto utile per la costruzione graduale.
@@ -53,6 +54,9 @@ public class BookingRequestBean {
         this.people = other.people;
         this.extras = copyExtras(other.extras);
         this.usePoints = other.usePoints;
+        this.paymentDetails = other.paymentDetails == null
+                ? null
+                : new PaymentDetailsBean(other.paymentDetails);
     }
 
     public long getHotelId() {
@@ -101,6 +105,18 @@ public class BookingRequestBean {
 
     public void setUsePoints(boolean usePoints) {
         this.usePoints = usePoints;
+    }
+
+    public PaymentDetailsBean getPaymentDetails() {
+        return paymentDetails == null
+                ? null
+                : new PaymentDetailsBean(paymentDetails);
+    }
+
+    public void setPaymentDetails(PaymentDetailsBean paymentDetails) {
+        this.paymentDetails = paymentDetails == null
+                ? null
+                : new PaymentDetailsBean(paymentDetails);
     }
 
     public void validateSyntax() throws ValidationException {

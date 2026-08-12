@@ -69,7 +69,8 @@ public final class AppContext {
                 new ManageHotelsApplicationController(
                         hotelDAO,
                         bookingDAO,
-                        userSession
+                        userSession,
+                        bookingFacade
                 );
     }
 

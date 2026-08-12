@@ -7,6 +7,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.GridPane?>
@@ -73,13 +74,15 @@
                     <GridPane hgap="14" vgap="12" styleClass="surface-card">
                         <padding><Insets top="20" right="24" bottom="20" left="24"/></padding>
                         <Label text="Dati carta (simulazione)" styleClass="subsection-title" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2"/>
-                        <TextField fx:id="cardNumberField" promptText="Numero carta" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="2" prefWidth="520"/>
+                        <PasswordField fx:id="cardNumberField" promptText="Numero carta" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="2" prefWidth="520"/>
                         <TextField fx:id="expiryField" promptText="MM/AA" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                        <TextField fx:id="cvvField" promptText="CVV" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                        <PasswordField fx:id="cvvField" promptText="CVV" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
                         <TextField fx:id="cardHolderField" promptText="Nome intestatario" GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="2"/>
                     </GridPane>
 
-                    <Button text="Conferma prenotazione" onAction="#onConfirm"
+                    <Label text="La carta non viene addebitata ora: il pagamento parte dopo l'approvazione dell'albergatore."
+                           wrapText="true" styleClass="hint-label"/>
+                    <Button text="Invia richiesta di prenotazione" onAction="#onConfirm"
                             prefHeight="48" styleClass="primary-button" maxWidth="Infinity"/>
                 </VBox>
             </content>

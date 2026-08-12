@@ -78,7 +78,7 @@ public final class ManageHotelCLIGraphicController {
                             + " -> " + booking.getCheckOut()
                             + " | persone " + booking.getPeople()
                             + " | €" + booking.getTotalPrice()
-                            + " | " + booking.getStatus()));
+                            + " | " + booking.getStatusLabel()));
         } catch (AdventureTimeException e) {
             io.error(e.getMessage());
         }
@@ -91,6 +91,28 @@ public final class ManageHotelCLIGraphicController {
                     .manageHotelsController()
                     .cancelReceivedBooking(id);
             io.info("Prenotazione annullata.");
+        } catch (AdventureTimeException e) {
+            io.error(e.getMessage());
+        }
+    }
+
+    public void approveReceivedBooking() {
+        long id = io.readLong("Id richiesta da approvare: ");
+        try {
+            AppContext.getInstance().manageHotelsController()
+                    .approveReceivedBooking(id);
+            io.info("Richiesta approvata e prenotazione confermata.");
+        } catch (AdventureTimeException e) {
+            io.error(e.getMessage());
+        }
+    }
+
+    public void rejectReceivedBooking() {
+        long id = io.readLong("Id richiesta da rifiutare: ");
+        try {
+            AppContext.getInstance().manageHotelsController()
+                    .rejectReceivedBooking(id);
+            io.info("Richiesta rifiutata.");
         } catch (AdventureTimeException e) {
             io.error(e.getMessage());
         }

@@ -5,6 +5,7 @@ import org.example.adventuretime.model.BookingStatus;
 import org.example.adventuretime.model.HotelRoom;
 import org.example.adventuretime.model.Role;
 import org.example.adventuretime.model.User;
+import org.example.adventuretime.model.PaymentData;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -72,6 +73,9 @@ public final class DemoData {
         booking.setTotalPrice(new BigDecimal("600.00"));
         booking.setExtras(Set.of());
         booking.setStatus(BookingStatus.CONFIRMED);
+        booking.setPaymentData(new PaymentData(
+                "demo-payment", "Mario Rossi", "0000"));
+        booking.setPaymentCompleted(true);
         state.getBookings().add(booking);
 
         state.alignSequences();

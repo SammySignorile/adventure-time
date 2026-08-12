@@ -36,7 +36,13 @@ CREATE TABLE IF NOT EXISTS bookings (
     prezzo_totale DECIMAL(10,2) NOT NULL,
     extras VARCHAR(300) NOT NULL DEFAULT '',
     punti_usati INT NOT NULL DEFAULT 0,
-    stato ENUM('CONFIRMED', 'CANCELLED') NOT NULL DEFAULT 'CONFIRMED',
+    stato ENUM(
+        'PENDING_APPROVAL', 'CONFIRMED', 'REJECTED', 'CANCELLED'
+    ) NOT NULL DEFAULT 'PENDING_APPROVAL',
+    payment_token VARCHAR(100) NOT NULL,
+    card_holder VARCHAR(120) NOT NULL,
+    card_last_four CHAR(4) NOT NULL,
+    payment_completed BOOLEAN NOT NULL DEFAULT FALSE,
     UNIQUE KEY uk_booking_identity (user_id, hotel_id, check_in),
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (hotel_id) REFERENCES hotelrooms(id)
@@ -113,15 +119,18 @@ INSERT IGNORE INTO hotel_images(hotel_id, nome_immagine) VALUES
 
 INSERT IGNORE INTO bookings(
     user_id, hotel_id, check_in, check_out, persone,
-    prezzo_totale, extras, punti_usati, stato
+    prezzo_totale, extras, punti_usati, stato,
+    payment_token, card_holder, card_last_four, payment_completed
 )
 VALUES
 ((SELECT id FROM users WHERE email = 'sammy@gmail.com'),
  (SELECT id FROM hotelrooms WHERE nome = 'Hotel Roma Center'),
- '2027-06-10', '2027-06-15', 1, 600.00, '', 0, @stato_confermato),
+ '2027-06-10', '2027-06-15', 1, 600.00, '', 0, @stato_confermato,
+ 'demo-1', 'Sammy Signorile', '0000', TRUE),
 ((SELECT id FROM users WHERE email = 'dany@gmail.com'),
  (SELECT id FROM hotelrooms WHERE nome = 'Hotel Roma Termini'),
  '2027-07-15', '2027-07-18', 2, 370.00,
- 'HEALTH_INSURANCE', 1000, @stato_confermato);
+ 'HEALTH_INSURANCE', 1000, @stato_confermato,
+ 'demo-2', 'Daniele Di Meo', '0000', TRUE);
 
-INSERT IGNORE INTO app_metadata(id, schema_version) VALUES (1, 1);
+INSERT IGNORE INTO app_metadata(id, schema_version) VALUES (1, 2);
