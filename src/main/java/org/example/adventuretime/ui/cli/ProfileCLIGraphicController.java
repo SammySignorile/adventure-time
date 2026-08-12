@@ -87,7 +87,7 @@ public final class ProfileCLIGraphicController {
                     + " -> " + booking.getCheckOut()
                     + " | persone: " + booking.getPeople()
                     + " | €" + booking.getTotalPrice()
-                    + " | stato: " + booking.getStatus()
+                    + " | stato: " + booking.getStatusLabel()
                     + " | extra: " + booking.getExtrasLabel());
         }
     }

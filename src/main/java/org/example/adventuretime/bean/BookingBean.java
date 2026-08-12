@@ -115,6 +115,18 @@ public class BookingBean {
         this.status = status;
     }
 
+    public String getStatusLabel() {
+        if (status == null) {
+            return "Stato non disponibile";
+        }
+        return switch (status) {
+            case PENDING_APPROVAL -> "In attesa di approvazione";
+            case CONFIRMED -> "Confermata";
+            case REJECTED -> "Rifiutata";
+            case CANCELLED -> "Annullata";
+        };
+    }
+
     public String getExtrasLabel() {
         if (extras.isEmpty()) {
             return "Nessun servizio extra";

@@ -17,6 +17,8 @@ public interface BookingDAO {
     void updateStatus(long bookingId, BookingStatus status)
             throws PersistenceException;
 
+    void approveBooking(long bookingId) throws PersistenceException;
+
     boolean isHotelAvailable(long hotelId, LocalDate checkIn, LocalDate checkOut)
             throws PersistenceException;
 }

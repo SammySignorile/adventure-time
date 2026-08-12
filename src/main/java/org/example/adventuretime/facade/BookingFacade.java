@@ -17,6 +17,8 @@ import org.example.adventuretime.model.Booking;
 import org.example.adventuretime.model.BookingStatus;
 import org.example.adventuretime.model.ExtraService;
 import org.example.adventuretime.model.HotelRoom;
+import org.example.adventuretime.model.PaymentData;
+import org.example.adventuretime.model.User;
 import org.example.adventuretime.pattern.booking.BaseBookingPrice;
 import org.example.adventuretime.pattern.booking.BookingPriceComponent;
 import org.example.adventuretime.pattern.booking.BookingPriceDecoratorFactory;
@@ -25,6 +27,7 @@ import org.example.adventuretime.session.UserSession;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 
 /**
  * Facade del sottosistema di prenotazione.
@@ -132,7 +135,7 @@ public final class BookingFacade {
         return quote;
     }
 
-    public BookingBean createBooking(BookingRequestBean request)
+    public BookingBean createBookingRequest(BookingRequestBean request)
             throws ValidationException, PersistenceException,
             AuthorizationException, HotelUnavailableException {
 
@@ -159,23 +162,57 @@ public final class BookingFacade {
         booking.setTotalPrice(quote.getTotalPrice());
         booking.setExtras(request.getExtras());
         booking.setPointsUsed(quote.getPointsUsed());
-        booking.setStatus(BookingStatus.CONFIRMED);
+        booking.setPaymentData(createPaymentData(request));
+        booking.setPaymentCompleted(false);
+        booking.setStatus(BookingStatus.PENDING_APPROVAL);
 
         Booking created = bookingDAO.save(booking);
+        return BookingMapper.toBean(created, quote.getHotel());
+    }
 
-        int earnedPoints = quote.getTotalPrice()
+    public void approveBooking(Booking booking)
+            throws ValidationException, PersistenceException {
+        if (booking == null
+                || booking.getStatus() != BookingStatus.PENDING_APPROVAL) {
+            throw new ValidationException(
+                    "Si possono approvare solo le richieste in attesa.");
+        }
+
+        User traveler = userDAO.findById(booking.getUserId())
+                .orElseThrow(() -> new PersistenceException(
+                        "Il viaggiatore della prenotazione non esiste."));
+        if (traveler.getPoints() < booking.getPointsUsed()) {
+            throw new ValidationException(
+                    "Il viaggiatore non ha piu punti sufficienti.");
+        }
+
+        bookingDAO.approveBooking(booking.getId());
+
+        int earnedPoints = booking.getTotalPrice()
                 .multiply(EARN_RATE)
                 .setScale(0, RoundingMode.DOWN)
                 .intValue();
-
-        int updatedPoints = sessionUser.getPoints()
-                - quote.getPointsUsed()
+        int updatedPoints = traveler.getPoints()
+                - booking.getPointsUsed()
                 + earnedPoints;
+        userDAO.updatePoints(traveler.getId(), updatedPoints);
+    }
 
-        userDAO.updatePoints(sessionUser.getId(), updatedPoints);
-        userSession.updatePoints(updatedPoints);
-
-        return BookingMapper.toBean(created, quote.getHotel());
+    private static PaymentData createPaymentData(BookingRequestBean request)
+            throws ValidationException {
+        var details = request.getPaymentDetails();
+        if (details == null) {
+            return new PaymentData(
+                    UUID.randomUUID().toString(),
+                    "Pagamento di prova",
+                    "0000");
+        }
+        details.validate();
+        String number = details.normalizedCardNumber();
+        return new PaymentData(
+                UUID.randomUUID().toString(),
+                details.getCardHolder().trim(),
+                number.substring(number.length() - 4));
     }
 
     private UserBean requireTraveler() throws AuthorizationException {

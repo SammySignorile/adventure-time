@@ -76,6 +76,15 @@ public class StateBookingDAO implements BookingDAO {
     }
 
     @Override
+    public synchronized void approveBooking(long bookingId)
+            throws PersistenceException {
+        Booking booking = findStoredBooking(bookingId);
+        booking.setPaymentCompleted(true);
+        booking.setStatus(BookingStatus.CONFIRMED);
+        store.persist();
+    }
+
+    @Override
     public synchronized boolean isHotelAvailable(
             long hotelId,
             LocalDate checkIn,
@@ -84,13 +93,24 @@ public class StateBookingDAO implements BookingDAO {
         return store.getState().getBookings().stream()
                 .filter(booking -> booking.getHotelId() == hotelId)
                 .filter(booking -> booking.getStatus()
-                        == BookingStatus.CONFIRMED)
+                        == BookingStatus.CONFIRMED
+                        || booking.getStatus()
+                        == BookingStatus.PENDING_APPROVAL)
                 .noneMatch(booking -> overlaps(
                         booking.getCheckIn(),
                         booking.getCheckOut(),
                         checkIn,
                         checkOut
                 ));
+    }
+
+    private Booking findStoredBooking(long bookingId)
+            throws PersistenceException {
+        return store.getState().getBookings().stream()
+                .filter(item -> item.getId() == bookingId)
+                .findFirst()
+                .orElseThrow(() -> new PersistenceException(
+                        "La prenotazione selezionata non esiste."));
     }
 
     private static boolean overlaps(

@@ -43,6 +43,7 @@
                     <TableColumn fx:id="peopleColumn" text="Persone" prefWidth="75"/>
                     <TableColumn fx:id="totalColumn" text="Totale" prefWidth="90"/>
                     <TableColumn fx:id="extrasColumn" text="Extra" prefWidth="250"/>
+                    <TableColumn fx:id="statusColumn" text="Stato" prefWidth="190"/>
                 </columns>
             </TableView>
         </VBox>

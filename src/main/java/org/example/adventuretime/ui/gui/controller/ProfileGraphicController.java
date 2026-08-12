@@ -49,6 +49,9 @@ public final class ProfileGraphicController {
     private TableColumn<BookingBean, String> extrasColumn;
 
     @FXML
+    private TableColumn<BookingBean, String> statusColumn;
+
+    @FXML
     private void initialize() {
         configureTable();
         loadData();
@@ -90,6 +93,9 @@ public final class ProfileGraphicController {
                         data.getValue().getExtrasLabel()
                 )
         );
+
+        statusColumn.setCellValueFactory(data ->
+                new SimpleStringProperty(data.getValue().getStatusLabel()));
     }
 
     /**

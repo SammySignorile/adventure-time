@@ -16,16 +16,23 @@ final class DatabaseInitializer {
 
     private static final String SCRIPT_RESOURCE =
             "/database/adventuretime.sql";
+    private static final String MIGRATION_V2_RESOURCE =
+            "/database/migration-v2.sql";
+    private static final int CURRENT_SCHEMA_VERSION = 2;
 
     private DatabaseInitializer() {
     }
 
     static void initialize(Connection connection) throws PersistenceException {
-        if (isInitialized(connection)) {
+        int schemaVersion = readSchemaVersion(connection);
+        if (schemaVersion == CURRENT_SCHEMA_VERSION) {
             return;
         }
 
-        String script = readScript();
+        String resource = schemaVersion == 0
+                ? SCRIPT_RESOURCE
+                : MIGRATION_V2_RESOURCE;
+        String script = readScript(resource);
         try {
             executeStatements(connection, script);
         } catch (SQLException e) {
@@ -34,22 +41,23 @@ final class DatabaseInitializer {
         }
     }
 
-    private static boolean isInitialized(Connection connection) {
+    private static int readSchemaVersion(Connection connection) {
         String sql = "SELECT schema_version FROM app_metadata WHERE id = 1";
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)) {
-            return resultSet.next();
+            return resultSet.next() ? resultSet.getInt("schema_version") : 0;
         } catch (SQLException ignored) {
-            return false;
+            return 0;
         }
     }
 
-    private static String readScript() throws PersistenceException {
+    private static String readScript(String resource)
+            throws PersistenceException {
         try (InputStream stream = DatabaseInitializer.class
-                .getResourceAsStream(SCRIPT_RESOURCE)) {
+                .getResourceAsStream(resource)) {
             if (stream == null) {
                 throw new PersistenceException(
-                        "Script del database non trovato: " + SCRIPT_RESOURCE);
+                        "Script del database non trovato: " + resource);
             }
             return new String(stream.readAllBytes(), StandardCharsets.UTF_8);
         } catch (IOException e) {

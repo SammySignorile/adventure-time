@@ -91,7 +91,7 @@ public final class ManageHotelsGraphicController {
                         + data.getValue().getTotalPrice()));
         bookingStatusColumn.setCellValueFactory(data ->
                 new SimpleStringProperty(
-                        data.getValue().getStatus().name()));
+                        data.getValue().getStatusLabel()));
         refresh();
     }
 
@@ -187,6 +187,50 @@ public final class ManageHotelsGraphicController {
         } catch (AdventureTimeException e) {
             AlertHelper.error(e.getMessage());
         }
+    }
+
+    @FXML
+    private void onApproveBooking() {
+        BookingBean selected = selectedBooking("approvare");
+        if (selected == null) {
+            return;
+        }
+        try {
+            AppContext.getInstance().manageHotelsController()
+                    .approveReceivedBooking(selected.getId());
+            refresh();
+            AlertHelper.info("Richiesta approvata",
+                    "La prenotazione e stata confermata.");
+        } catch (AdventureTimeException e) {
+            AlertHelper.error(e.getMessage());
+        }
+    }
+
+    @FXML
+    private void onRejectBooking() {
+        BookingBean selected = selectedBooking("rifiutare");
+        if (selected == null) {
+            return;
+        }
+        try {
+            AppContext.getInstance().manageHotelsController()
+                    .rejectReceivedBooking(selected.getId());
+            refresh();
+            AlertHelper.info("Richiesta rifiutata",
+                    "La camera e nuovamente disponibile.");
+        } catch (AdventureTimeException e) {
+            AlertHelper.error(e.getMessage());
+        }
+    }
+
+    private BookingBean selectedBooking(String action) {
+        BookingBean selected = receivedBookingsTable
+                .getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            AlertHelper.error(
+                    "Selezionare una prenotazione da " + action + ".");
+        }
+        return selected;
     }
 
     private void refresh() {

@@ -82,8 +82,10 @@ public final class CliApplication {
             io.info("3) Elimina una struttura");
             io.info("4) Prenotazioni ricevute");
             io.info("5) Annulla una prenotazione ricevuta");
-            io.info("6) Profilo");
-            io.info("7) Logout");
+            io.info("6) Approva una richiesta");
+            io.info("7) Rifiuta una richiesta");
+            io.info("8) Profilo");
+            io.info("9) Logout");
             io.info("0) Esci");
 
             switch (io.readInt("Scelta: ")) {
@@ -92,8 +94,10 @@ public final class CliApplication {
                 case 3 -> manage.deleteHotel();
                 case 4 -> manage.listReceivedBookings();
                 case 5 -> manage.cancelReceivedBooking();
-                case 6 -> profile.execute();
-                case 7 -> {
+                case 6 -> manage.approveReceivedBooking();
+                case 7 -> manage.rejectReceivedBooking();
+                case 8 -> profile.execute();
+                case 9 -> {
                     logout();
                     return true;
                 }

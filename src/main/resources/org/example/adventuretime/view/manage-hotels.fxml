@@ -85,12 +85,17 @@
                             <TableColumn fx:id="bookingDatesColumn" text="Date" prefWidth="210"/>
                             <TableColumn fx:id="bookingPeopleColumn" text="Persone" prefWidth="90"/>
                             <TableColumn fx:id="bookingTotalColumn" text="Totale" prefWidth="110"/>
-                            <TableColumn fx:id="bookingStatusColumn" text="Stato" prefWidth="110"/>
+                            <TableColumn fx:id="bookingStatusColumn" text="Stato" prefWidth="190"/>
                         </columns>
                     </TableView>
-                    <Button text="Annulla prenotazione selezionata"
-                            onAction="#onCancelBooking"
-                            styleClass="danger-button"/>
+                    <HBox spacing="10">
+                        <Button text="Approva richiesta" onAction="#onApproveBooking"
+                                styleClass="primary-button"/>
+                        <Button text="Rifiuta richiesta" onAction="#onRejectBooking"
+                                styleClass="danger-button"/>
+                        <Button text="Annulla confermata" onAction="#onCancelBooking"
+                                styleClass="secondary-button"/>
+                    </HBox>
                 </VBox>
             </items>
         </SplitPane>
