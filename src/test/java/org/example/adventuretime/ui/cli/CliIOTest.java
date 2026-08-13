@@ -10,7 +10,6 @@ import java.util.Scanner;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/** Responsabile test: Sammy Signorile (matricola da inserire). */
 class CliIOTest {
 
     @Test

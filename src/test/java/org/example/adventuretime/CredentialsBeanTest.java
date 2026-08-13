@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/** Responsabile test: Sammy Signorile (matricola da inserire). */
 class CredentialsBeanTest {
 
     @Test
