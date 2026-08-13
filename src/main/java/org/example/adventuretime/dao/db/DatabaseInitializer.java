@@ -57,6 +57,44 @@ final class DatabaseInitializer {
                     + "ADD COLUMN nome_immagine VARCHAR(255)");
         }
 
+        if (tableExists(connection, "hotel_images")
+                && !columnExists(connection, "hotel_images", "nome_immagine")) {
+            if (columnExists(connection, "hotel_images", "image_url")) {
+                execute(connection, "ALTER TABLE hotel_images "
+                        + "CHANGE COLUMN image_url nome_immagine VARCHAR(255) "
+                        + "NOT NULL");
+            } else {
+                execute(connection, "ALTER TABLE hotel_images "
+                        + "ADD COLUMN nome_immagine VARCHAR(255) NOT NULL");
+            }
+        }
+
+        if (tableExists(connection, "bookings")) {
+            execute(connection, "ALTER TABLE bookings MODIFY stato ENUM("
+                    + "'PENDING_APPROVAL', 'CONFIRMED', 'REJECTED', "
+                    + "'CANCELLED') NOT NULL DEFAULT 'PENDING_APPROVAL'");
+            addColumnIfMissing(connection, "bookings", "payment_token",
+                    "VARCHAR(100) NOT NULL DEFAULT ''");
+            addColumnIfMissing(connection, "bookings", "card_holder",
+                    "VARCHAR(120) NOT NULL DEFAULT ''");
+            addColumnIfMissing(connection, "bookings", "card_last_four",
+                    "CHAR(4) NOT NULL DEFAULT ''");
+            addColumnIfMissing(connection, "bookings", "payment_completed",
+                    "BOOLEAN NOT NULL DEFAULT FALSE");
+        }
+
+    }
+
+    private static void addColumnIfMissing(
+            Connection connection,
+            String table,
+            String column,
+            String definition
+    ) throws SQLException {
+        if (!columnExists(connection, table, column)) {
+            execute(connection, "ALTER TABLE " + table + " ADD COLUMN "
+                    + column + " " + definition);
+        }
     }
 
     private static boolean tableExists(Connection connection, String table)
