@@ -88,13 +88,13 @@ VALUES
 ((SELECT id FROM users WHERE email = @email_mike), 'Hotel Roma Center', 'Roma', 'Camera Singola', 'WiFi - Colazione inclusa - Piscina', '500m dal centro', 120.00, 'roma 1.jpg', 1),
 ((SELECT id FROM users WHERE email = @email_mike), 'Hotel Roma Termini', 'Roma', 'Camera Doppia', 'WiFi - Colazione inclusa - Aria condizionata', '300m dal centro', 110.00, 'roma 2.jpg', 2),
 ((SELECT id FROM users WHERE email = @email_mike), 'Hotel Colosseo View', 'Roma', 'Suite Deluxe', 'Vista Colosseo - WiFi - Spa', '150m dal centro', 280.00, 'roma 3.jpg', 4),
-((SELECT id FROM users WHERE email = @email_leoncino), 'Hotel Trastevere Cozy', 'Roma', 'Camera Matrimoniale', 'WiFi - Colazione - Terrazza', '800m dal centro', 130.00, 'roma centro.jpg', 2),
-((SELECT id FROM users WHERE email = @email_leoncino), 'Hotel Milano Luxury', 'Milano', 'Suite Deluxe', 'Spa - Piscina - Ristorante', '200m dal centro', 250.00, 'stanza 2.jpg', 4),
-((SELECT id FROM users WHERE email = @email_leoncino), 'Hotel Napoli Mare', 'Napoli', 'Camera Matrimoniale', 'Vista mare - WiFi - Colazione', '1km dal centro', 90.00, 'colazione 2.jpg', 2),
-((SELECT id FROM users WHERE email = @email_giovanni), 'Hotel Napoli Centro', 'Napoli', 'Camera Singola', 'WiFi - Colazione inclusa', '400m dal centro', 85.00, 'colazione 3.jpg', 1),
-((SELECT id FROM users WHERE email = @email_giovanni), 'Hotel Vesuvio Luxury', 'Napoli', 'Suite', 'Vista Vesuvio - Piscina - Spa', '600m dal centro', 220.00, 'stanza 2.jpg', 4),
-((SELECT id FROM users WHERE email = @email_sara), 'Hotel Spaccanapoli', 'Napoli', 'Camera Doppia', 'WiFi - Parcheggio - Colazione', '200m dal centro', 95.00, 'colazione 2.jpg', 2),
-((SELECT id FROM users WHERE email = @email_sara), 'Hotel Firenze Relax', 'Firenze', 'Camera Doppia', 'WiFi - Giardino - Parcheggio', '300m dal centro', 140.00, 'colazione 3.jpg', 2);
+((SELECT id FROM users WHERE email = @email_leoncino), 'Hotel Trastevere Cozy', 'Roma', 'Camera Matrimoniale', 'WiFi - Colazione - Terrazza', '800m dal centro', 130.00, 'roma 4.jpg', 2),
+((SELECT id FROM users WHERE email = @email_leoncino), 'Hotel Milano Luxury', 'Milano', 'Suite Deluxe', 'Spa - Piscina - Ristorante', '200m dal centro', 250.00, 'milano 1.jpg', 4),
+((SELECT id FROM users WHERE email = @email_leoncino), 'Hotel Napoli Mare', 'Napoli', 'Camera Matrimoniale', 'Vista mare - WiFi - Colazione', '1km dal centro', 90.00, 'napoli 1.jpg', 2),
+((SELECT id FROM users WHERE email = @email_giovanni), 'Hotel Napoli Centro', 'Napoli', 'Camera Singola', 'WiFi - Colazione inclusa', '400m dal centro', 85.00, 'napoli 2.jpg', 1),
+((SELECT id FROM users WHERE email = @email_giovanni), 'Hotel Vesuvio Luxury', 'Napoli', 'Suite', 'Vista Vesuvio - Piscina - Spa', '600m dal centro', 220.00, 'napoli 3.jpg', 4),
+((SELECT id FROM users WHERE email = @email_sara), 'Hotel Spaccanapoli', 'Napoli', 'Camera Doppia', 'WiFi - Parcheggio - Colazione', '200m dal centro', 95.00, 'napoli 4.jpg', 2),
+((SELECT id FROM users WHERE email = @email_sara), 'Hotel Firenze Relax', 'Firenze', 'Camera Doppia', 'WiFi - Giardino - Parcheggio', '300m dal centro', 140.00, 'firenze 1.jpg', 2);
 
 INSERT IGNORE INTO hotel_images(hotel_id, nome_immagine) VALUES
 ((SELECT id FROM hotelrooms WHERE nome = 'Hotel Roma Center'), 'roma 1.jpg'),
@@ -104,9 +104,11 @@ INSERT IGNORE INTO hotel_images(hotel_id, nome_immagine) VALUES
 ((SELECT id FROM hotelrooms WHERE nome = 'Hotel Roma Termini'), 'hotel roma.jpg'),
 ((SELECT id FROM hotelrooms WHERE nome = 'Hotel Roma Termini'), 'termini.jpg'),
 ((SELECT id FROM hotelrooms WHERE nome = 'Hotel Roma Termini'), 'stanza 2.jpg'),
+((SELECT id FROM hotelrooms WHERE nome = 'Hotel Roma Termini'), 'roma termini lounge.jpg'),
 ((SELECT id FROM hotelrooms WHERE nome = 'Hotel Colosseo View'), 'roma 3.jpg'),
 ((SELECT id FROM hotelrooms WHERE nome = 'Hotel Colosseo View'), 'colosseo 3.jpg'),
 ((SELECT id FROM hotelrooms WHERE nome = 'Hotel Colosseo View'), 'stanza roma 1.jpg'),
+((SELECT id FROM hotelrooms WHERE nome = 'Hotel Colosseo View'), 'colosseo lobby.jpg'),
 ((SELECT id FROM hotelrooms WHERE nome = 'Hotel Trastevere Cozy'), 'roma centro.jpg'),
 ((SELECT id FROM hotelrooms WHERE nome = 'Hotel Trastevere Cozy'), 'stanza roma 1.jpg'),
 ((SELECT id FROM hotelrooms WHERE nome = 'Hotel Trastevere Cozy'), 'colazione 1.jpg'),
