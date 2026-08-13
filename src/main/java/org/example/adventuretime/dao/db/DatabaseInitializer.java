@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -29,15 +30,60 @@ final class DatabaseInitializer {
             return;
         }
 
-        String resource = schemaVersion == 0
-                ? SCRIPT_RESOURCE
-                : MIGRATION_V2_RESOURCE;
-        String script = readScript(resource);
         try {
+            if (schemaVersion == 0) {
+                upgradeUnversionedSchema(connection);
+            }
+            String resource = schemaVersion == 0
+                    ? SCRIPT_RESOURCE
+                    : MIGRATION_V2_RESOURCE;
+            String script = readScript(resource);
             executeStatements(connection, script);
         } catch (SQLException e) {
             throw new PersistenceException(
                     "Impossibile inizializzare il database MySQL.", e);
+        }
+    }
+
+    /**
+     * Aggiunge la colonna immagini ai database locali creati con il vecchio
+     * schema. Lo script principale si occupa del resto dell'inizializzazione.
+     */
+    private static void upgradeUnversionedSchema(Connection connection)
+            throws SQLException {
+        if (tableExists(connection, "hotelrooms")
+                && !columnExists(connection, "hotelrooms", "nome_immagine")) {
+            execute(connection, "ALTER TABLE hotelrooms "
+                    + "ADD COLUMN nome_immagine VARCHAR(255)");
+        }
+
+    }
+
+    private static boolean tableExists(Connection connection, String table)
+            throws SQLException {
+        DatabaseMetaData metadata = connection.getMetaData();
+        try (ResultSet tables = metadata.getTables(
+                connection.getCatalog(), null, table, new String[]{"TABLE"})) {
+            return tables.next();
+        }
+    }
+
+    private static boolean columnExists(
+            Connection connection,
+            String table,
+            String column
+    ) throws SQLException {
+        DatabaseMetaData metadata = connection.getMetaData();
+        try (ResultSet columns = metadata.getColumns(
+                connection.getCatalog(), null, table, column)) {
+            return columns.next();
+        }
+    }
+
+    private static void execute(Connection connection, String sql)
+            throws SQLException {
+        try (Statement statement = connection.createStatement()) {
+            statement.execute(sql);
         }
     }
 
