@@ -76,7 +76,7 @@ public final class ConfigLoader {
      * Converte una proprietà testuale in Path.
      *
      * Nel properties è possibile scrivere ${user.home}; il programma lo
-     * sostituisce con la cartella dell'utente Windows, ad esempio C:/Users/sammy.
+     * sostituisce con la cartella dell'utente corrente.
      */
     private static Path readPath(Properties properties, String key)
             throws ConfigurationException {

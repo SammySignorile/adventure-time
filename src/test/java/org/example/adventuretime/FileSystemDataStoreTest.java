@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/** Responsabile test: Sammy Signorile (matricola da inserire). */
 class FileSystemDataStoreTest {
 
     @TempDir
