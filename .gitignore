@@ -1,0 +1,15 @@
+.idea/
+*.iml
+target/
+out/
+tmp/
+output/
+docs/
+*.log
+*.pdf
+*.docx
+*.drawio
+.DS_Store
+data/*.dat
+.env
+*.md

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.adventuretime.ui.gui.controller.HotelCardGraphicController"
+      alignment="CENTER_LEFT" spacing="18" styleClass="hotel-card">
+
+    <padding>
+        <Insets top="20" right="22" bottom="20" left="22"/>
+    </padding>
+
+    <StackPane prefWidth="190" prefHeight="125"
+               minWidth="190" minHeight="125"
+               styleClass="hotel-image-box">
+        <ImageView fx:id="hotelImageView"
+                   fitWidth="190" fitHeight="125"
+                   preserveRatio="false" smooth="true"/>
+
+        <Label fx:id="missingImageLabel"
+               text="Foto non disponibile"
+               wrapText="true"
+               styleClass="missing-image-label"/>
+
+        <Button fx:id="previousImageButton"
+                text="‹"
+                onAction="#onPreviousImage"
+                StackPane.alignment="CENTER_LEFT"
+                styleClass="card-carousel-button">
+            <StackPane.margin>
+                <Insets left="6"/>
+            </StackPane.margin>
+        </Button>
+
+        <Button fx:id="nextImageButton"
+                text="›"
+                onAction="#onNextImage"
+                StackPane.alignment="CENTER_RIGHT"
+                styleClass="card-carousel-button">
+            <StackPane.margin>
+                <Insets right="6"/>
+            </StackPane.margin>
+        </Button>
+    </StackPane>
+
+    <VBox spacing="6" HBox.hgrow="ALWAYS">
+        <Label fx:id="nameLabel" text="Nome hotel" styleClass="card-title"/>
+        <Label fx:id="cityLabel" text="Città" styleClass="muted-label"/>
+        <Label fx:id="roomTypeLabel" text="Tipo camera"/>
+        <Label fx:id="servicesLabel" text="Servizi" wrapText="true"/>
+        <HBox spacing="18">
+            <Label fx:id="distanceLabel" text="Distanza" styleClass="muted-label"/>
+            <Label fx:id="capacityLabel" text="Capienza" styleClass="muted-label"/>
+        </HBox>
+    </VBox>
+
+    <Region HBox.hgrow="ALWAYS"/>
+
+    <VBox alignment="CENTER_RIGHT" spacing="12">
+        <Label fx:id="priceLabel" text="€0/notte" styleClass="price-label"/>
+        <Button text="Dettagli"
+                onAction="#onDetailsClick"
+                styleClass="primary-button"
+                prefWidth="130"/>
+    </VBox>
+</HBox>

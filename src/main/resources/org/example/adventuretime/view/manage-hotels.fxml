@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.adventuretime.ui.gui.controller.ManageHotelsGraphicController"
+            styleClass="page-background">
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="15" styleClass="top-bar">
+            <padding><Insets top="16" right="22" bottom="16" left="22"/></padding>
+            <Button text="← Home" onAction="#onBack" styleClass="ghost-button"/>
+            <Label text="Gestione strutture" styleClass="brand-small"/>
+        </HBox>
+    </top>
+    <center>
+        <SplitPane orientation="VERTICAL" dividerPositions="0.62">
+            <items>
+                <HBox spacing="18">
+                    <padding><Insets top="18" right="20" bottom="12" left="20"/></padding>
+                    <VBox spacing="10" HBox.hgrow="ALWAYS">
+                        <Label text="Le mie strutture" styleClass="section-title"/>
+                        <TableView fx:id="hotelsTable" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="hotelNameColumn" text="Nome" prefWidth="160"/>
+                                <TableColumn fx:id="hotelCityColumn" text="Città" prefWidth="90"/>
+                                <TableColumn fx:id="hotelRoomColumn" text="Camera" prefWidth="125"/>
+                                <TableColumn fx:id="hotelPriceColumn" text="Prezzo" prefWidth="80"/>
+                                <TableColumn fx:id="hotelImageColumn" text="File foto" prefWidth="125"/>
+                            </columns>
+                        </TableView>
+                        <Button text="Elimina selezionata" onAction="#onDeleteHotel" styleClass="danger-button"/>
+                    </VBox>
+
+                    <VBox spacing="10" minWidth="360" styleClass="surface-card">
+                        <padding><Insets top="18" right="18" bottom="18" left="18"/></padding>
+                        <Label text="Nuova struttura" styleClass="subsection-title"/>
+                        <GridPane hgap="10" vgap="10">
+                            <TextField fx:id="nameField" promptText="Nome" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2"/>
+                            <TextField fx:id="cityField" promptText="Città" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                            <TextField fx:id="roomTypeField" promptText="Tipo camera" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                            <TextField fx:id="servicesField" promptText="Servizi" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2"/>
+                            <TextField fx:id="distanceField" promptText="Distanza centro" GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="2"/>
+                            <TextField fx:id="priceField" promptText="Prezzo/notte" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                            <TextField fx:id="capacityField" promptText="Capienza" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                            <TextField fx:id="imageFileField"
+                                       promptText="Nome file foto, es. roma 1.jpg"
+                                       GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.columnSpan="2"/>
+                        </GridPane>
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <ImageView fx:id="previewImageView"
+                                       fitWidth="130" fitHeight="85"
+                                       preserveRatio="false" visible="false"/>
+                            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                <Button text="Anteprima foto" onAction="#onPreviewImage" styleClass="secondary-button"/>
+                                <Label fx:id="previewMessageLabel"
+                                       text="Inserisci il nome del file, poi premi Anteprima."
+                                       wrapText="true" styleClass="hint-label"/>
+                            </VBox>
+                        </HBox>
+
+                        <Button text="Salva struttura" onAction="#onSaveHotel"
+                                styleClass="primary-button" maxWidth="Infinity"/>
+                    </VBox>
+                </HBox>
+
+                <VBox spacing="10">
+                    <padding><Insets top="12" right="20" bottom="20" left="20"/></padding>
+                    <Label text="Prenotazioni ricevute" styleClass="section-title"/>
+                    <TableView fx:id="receivedBookingsTable" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="bookingHotelColumn" text="Hotel" prefWidth="220"/>
+                            <TableColumn fx:id="bookingDatesColumn" text="Date" prefWidth="210"/>
+                            <TableColumn fx:id="bookingPeopleColumn" text="Persone" prefWidth="90"/>
+                            <TableColumn fx:id="bookingTotalColumn" text="Totale" prefWidth="110"/>
+                            <TableColumn fx:id="bookingStatusColumn" text="Stato" prefWidth="190"/>
+                        </columns>
+                    </TableView>
+                    <HBox spacing="10">
+                        <Button text="Approva richiesta" onAction="#onApproveBooking"
+                                styleClass="primary-button"/>
+                        <Button text="Rifiuta richiesta" onAction="#onRejectBooking"
+                                styleClass="danger-button"/>
+                        <Button text="Annulla confermata" onAction="#onCancelBooking"
+                                styleClass="secondary-button"/>
+                    </HBox>
+                </VBox>
+            </items>
+        </SplitPane>
+    </center>
+</BorderPane>

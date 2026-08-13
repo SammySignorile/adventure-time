@@ -1,0 +1,13 @@
+package org.example.adventuretime.ui.gui.controller;
+
+import javafx.fxml.FXML;
+import org.example.adventuretime.navigation.SceneId;
+
+public final class VendorHomeGraphicController extends HomeGraphicController {
+
+    @FXML
+    private void onManageHotelsClick() {
+        navigate(SceneId.MANAGE_HOTELS);
+    }
+
+}
