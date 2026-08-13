@@ -10,9 +10,6 @@ import org.example.adventuretime.exception.PersistenceException;
 
 import java.nio.file.Path;
 
-/**
- * Concrete Abstract Factory used by FULL + FILESYSTEM mode.
- */
 public final class FileSystemDAOFactory implements DAOFactory {
 
     private final UserDAO userDAO;

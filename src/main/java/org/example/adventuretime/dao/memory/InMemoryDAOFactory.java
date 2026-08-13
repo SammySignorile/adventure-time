@@ -7,9 +7,6 @@ import org.example.adventuretime.dao.UserDAO;
 import org.example.adventuretime.dao.state.DataStore;
 import org.example.adventuretime.dao.state.InMemoryDataStore;
 
-/**
- * Concrete Abstract Factory used by DEMO mode.
- */
 public final class InMemoryDAOFactory implements DAOFactory {
 
     private final UserDAO userDAO;

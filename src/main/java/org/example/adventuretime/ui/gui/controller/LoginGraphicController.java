@@ -10,7 +10,6 @@ import org.example.adventuretime.exception.AdventureTimeException;
 import org.example.adventuretime.model.Role;
 import org.example.adventuretime.navigation.SceneId;
 
-/** JavaFX boundary of the Login use case. */
 public final class LoginGraphicController {
 
     @FXML

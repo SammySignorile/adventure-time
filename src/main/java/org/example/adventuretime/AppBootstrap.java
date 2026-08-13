@@ -8,12 +8,6 @@ import org.example.adventuretime.dao.filesystem.FileSystemDAOFactory;
 import org.example.adventuretime.dao.memory.InMemoryDAOFactory;
 import org.example.adventuretime.exception.AdventureTimeException;
 
-/**
- * Startup object requested by the project specification.
- *
- * It reads the properties before constructing any presentation or persistence
- * component, then selects one coherent DAO family.
- */
 public final class AppBootstrap {
 
     private AppBootstrap() {

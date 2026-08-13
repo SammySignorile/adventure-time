@@ -4,9 +4,6 @@ import org.example.adventuretime.model.ExtraService;
 
 import java.util.Set;
 
-/**
- * Keeps construction of the decorator chain in one place.
- */
 public final class BookingPriceDecoratorFactory {
 
     private BookingPriceDecoratorFactory() {

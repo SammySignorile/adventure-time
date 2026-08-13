@@ -6,13 +6,6 @@ import org.example.adventuretime.bean.UserBean;
 
 import java.util.Scanner;
 
-/**
- * Main loop of the command-line boundary.
- *
- * The CLI has its own graphic controllers, but it reuses exactly the same
- * application controllers used by JavaFX. This is the key architectural rule:
- * two interfaces, one business flow.
- */
 public final class CliApplication {
 
     private final CliIO io = new CliIO(new Scanner(System.in));

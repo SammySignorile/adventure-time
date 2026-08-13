@@ -5,12 +5,6 @@ import org.example.adventuretime.model.Role;
 
 import java.util.Optional;
 
-/**
- * Holds only the authenticated user's presentation-safe data.
- *
- * It is a session context, not a DAO cache: durable entities remain inside the
- * persistence layer. The session is cleared on logout.
- */
 public final class UserSession {
 
     private UserBean currentUser;

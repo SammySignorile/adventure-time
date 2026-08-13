@@ -18,7 +18,6 @@ public class User implements Serializable {
     private Role role;
 
     public User() {
-        // Needed by simple mappers and stores.
     }
 
     public User(long id, String firstName, String lastName, int points,

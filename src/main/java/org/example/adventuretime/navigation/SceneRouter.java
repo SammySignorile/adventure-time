@@ -10,12 +10,6 @@ import org.example.adventuretime.exception.ConfigurationException;
 import java.io.IOException;
 import java.net.URL;
 
-/**
- * Centralized JavaFX navigation.
- *
- * Controllers do not create Stages or know FXML paths. The same primary Stage
- * is reused for all screens, while FlowContext carries only temporary data.
- */
 public final class SceneRouter {
 
     private final Stage primaryStage;

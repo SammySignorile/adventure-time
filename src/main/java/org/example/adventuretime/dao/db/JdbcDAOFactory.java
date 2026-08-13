@@ -7,9 +7,6 @@ import org.example.adventuretime.dao.HotelDAO;
 import org.example.adventuretime.dao.UserDAO;
 import org.example.adventuretime.exception.PersistenceException;
 
-/**
- * Concrete Abstract Factory used by FULL + DB mode.
- */
 public final class JdbcDAOFactory implements DAOFactory {
 
     private final UserDAO userDAO;

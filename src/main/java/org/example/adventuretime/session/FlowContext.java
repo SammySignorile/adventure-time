@@ -7,13 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Short-lived buffer for a multi-screen flow.
- *
- * Search results are read from persistence only once, transformed into Beans,
- * and kept here while the user moves from search -> list -> checkout.
- * Nothing is written to persistence until the booking is confirmed.
- */
 public final class FlowContext {
 
     private SearchCriteriaBean lastCriteria;

@@ -5,9 +5,6 @@ import org.example.adventuretime.bean.CredentialsBean;
 import org.example.adventuretime.bean.UserBean;
 import org.example.adventuretime.exception.AdventureTimeException;
 
-/**
- * CLI boundary for the login use case.
- */
 public final class LoginCLIGraphicController {
 
     private final CliIO io;

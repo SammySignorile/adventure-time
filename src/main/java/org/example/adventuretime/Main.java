@@ -8,10 +8,6 @@ import org.example.adventuretime.ui.InterfaceFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * Plain Java entry point. JavaFX is launched only after configuration and DAO
- * selection have completed successfully.
- */
 public final class Main {
 
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
